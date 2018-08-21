@@ -32,19 +32,19 @@ msgstr "Eine 5-Sterne Bewertung hilft uns, {{appName}} unter die Leute zu bringe
 msgid "A member of the team will review your feedback as soon as possible."
 msgstr "Ein Mitarbeiter wird Ihr Feedback so bald wie möglich überprüfen."
 
-msgid "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
-msgstr "Un total de {{amountAboveMaxSizeStr}} {{coin}} a été exclu. La taille maximale autorisée pour une transaction a été dépassée.deutsch."
+msgid "A total of {{amountAboveMaxSizeStr}} MANGA were excluded. The maximum size allowed for a transaction was exceeded."
+msgstr "Un total de {{amountAboveMaxSizeStr}} MANGA a été exclu. La taille maximale autorisée pour une transaction a été dépassée.deutsch."
 
-msgid "A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
+msgid "A total of {{amountBelowFeeStr}} MANGA were excluded. These funds come from UTXOs smaller than the network fee provided."
 msgstr ""
 
 msgid "A total of {{amountStr}} ({{fiatAmount | currency}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal | currency}} {{currencyIsoCode}}). Would you like to proceed?"
 msgstr "Eine Anzahl an {{amountStr}} ({{fiatAmount | currency}} {{currencyIsoCode}}) {{withdrawalStr}} wird für ({{fiatWithdrawal | currency}} {{currencyIsoCode}}) ausgetauscht werden. Möchten Sie fortfahren?"
 
-msgid "A total of {{fee}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
+msgid "A total of {{fee}} MANGA were excluded. The maximum size allowed for a transaction was exceeded."
 msgstr ""
 
-msgid "A total of {{fee}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
+msgid "A total of {{fee}} MANGA were excluded. These funds come from UTXOs smaller than the network fee provided."
 msgstr ""
 
 msgid "About"
@@ -2433,7 +2433,7 @@ msgstr "{{appName}} hängt von Bitcore Wallet Service (BWS) ab bezüglich Blockc
 msgid "{{btx.feeRateStr}} of the total amount"
 msgstr "{{btx.feeRateStr}} des Gesamtbetrages"
 
-msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
+msgid "{{fee}} MANGA will be deducted for bitcoin networking fees."
 msgstr ""
 
 msgid "{{tx.feeRateStr}} of the total amount"

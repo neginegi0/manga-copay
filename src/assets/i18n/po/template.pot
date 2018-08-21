@@ -30,12 +30,12 @@ msgid "A member of the team will review your feedback as soon as possible."
 msgstr ""
 
 msgid ""
-"A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum "
+"A total of {{amountAboveMaxSizeStr}} were excluded. The maximum "
 "size allowed for a transaction was exceeded."
 msgstr ""
 
 msgid ""
-"A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come "
+"A total of {{amountBelowFeeStr}} were excluded. These funds come "
 "from UTXOs smaller than the network fee provided."
 msgstr ""
 
@@ -46,12 +46,12 @@ msgid ""
 msgstr ""
 
 msgid ""
-"A total of {{fee}} {{coin}} were excluded. The maximum size allowed for a "
+"A total of {{fee}} were excluded. The maximum size allowed for a "
 "transaction was exceeded."
 msgstr ""
 
 msgid ""
-"A total of {{fee}} {{coin}} were excluded. These funds come from UTXOs "
+"A total of {{fee}} were excluded. These funds come from UTXOs "
 "smaller than the network fee provided."
 msgstr ""
 
@@ -125,7 +125,7 @@ msgid "All addresses"
 msgstr ""
 
 msgid ""
-"All of your bitcoin wallet balance may not be available for immediate "
+"All of your mangacoin wallet balance may not be available for immediate "
 "spending."
 msgstr ""
 
@@ -161,14 +161,14 @@ msgid ""
 "latest version."
 msgstr ""
 
-msgid "Anyone with your backup phrase can access or spend your bitcoin."
+msgid "Anyone with your backup phrase can access or spend your mangacoin."
 msgstr ""
 
 msgid "Apply changes"
 msgstr ""
 
 msgid ""
-"Approximate Bitcoin network fee to transfer wallet's balance (with normal "
+"Approximate Mangacoin network fee to transfer wallet's balance (with normal "
 "priority)"
 msgstr ""
 
@@ -238,7 +238,7 @@ msgstr ""
 
 msgid ""
 "Because you are sending the maximum amount contained in this wallet, the "
-"{{params.coinName}} miner fee ({{params.fee}} {{params.coin}}) will be "
+"{{params.coinName}} miner fee ({{params.fee}} MANGA) will be "
 "deducted from the total. {{params.msg}}"
 msgstr ""
 
@@ -251,43 +251,43 @@ msgstr ""
 msgid "BitPay Card URI"
 msgstr ""
 
-msgid "Bitcoin Address"
+msgid "Mangacoin Address"
 msgstr ""
 
-msgid "Bitcoin Cash Address"
+msgid "Mangacoin Cash Address"
 msgstr ""
 
-msgid "Bitcoin Cash URI"
+msgid "Mangacoin Cash URI"
 msgstr ""
 
-msgid "Bitcoin Cash Wallets"
+msgid "Mangacoin Cash Wallets"
 msgstr ""
 
-msgid "Bitcoin Network Fee Policy"
+msgid "Mangacoin Network Fee Policy"
 msgstr ""
 
-msgid "Bitcoin URI"
+msgid "Mangacoin URI"
 msgstr ""
 
-msgid "Bitcoin Wallets"
+msgid "Mangacoin Wallets"
 msgstr ""
 
-msgid "Bitcoin is a currency."
+msgid "Mangacoin is a currency."
 msgstr ""
 
-msgid "Bitcoin is different - it cannot be safely held with a bank or web service."
+msgid "Mangacoin is different - it cannot be safely held with a bank or web service."
 msgstr ""
 
-msgid "Bitcoin is secure, digital money."
+msgid "Mangacoin is secure, digital money."
 msgstr ""
 
-msgid "Bitcoin miner fee:"
+msgid "Mangacoin miner fee:"
 msgstr ""
 
-msgid "Bitcoin network fee policy"
+msgid "Mangacoin network fee policy"
 msgstr ""
 
-msgid "Bitcoin transactions include a fee collected by miners on the network."
+msgid "Mangacoin transactions include a fee collected by miners on the network."
 msgstr ""
 
 msgid "Bought {{ amount }}"
@@ -308,7 +308,7 @@ msgstr ""
 msgid "Buy a Gift Card"
 msgstr ""
 
-msgid "Buying Bitcoin..."
+msgid "Buying Mangacoin..."
 msgstr ""
 
 msgid "Buying Gift Card..."
@@ -460,7 +460,7 @@ msgstr ""
 msgid "Contribute translations"
 msgstr ""
 
-msgid "Copay only supports Bitcoin Cash using new version numbers addresses"
+msgid "Copay only supports Mangacoin Cash using new version numbers addresses"
 msgstr ""
 
 msgid "Copayer already in this wallet"
@@ -484,7 +484,7 @@ msgstr ""
 msgid "Copied to clipboard"
 msgstr ""
 
-msgid "Copied {{params.coin | uppercase}} address"
+msgid "Copied MANGA address"
 msgstr ""
 
 msgid "Copy this text as it is to a safe place (notepad or email)"
@@ -589,7 +589,7 @@ msgstr ""
 msgid "Create a new wallet"
 msgstr ""
 
-msgid "Create bitcoin wallet"
+msgid "Create mangacoin wallet"
 msgstr ""
 
 msgid "Create personal wallet"
@@ -693,7 +693,7 @@ msgstr ""
 msgid "Duplicate"
 msgstr ""
 
-msgid "Duplicate ( Bitcoin Cash )"
+msgid "Duplicate ( Mangacoin Cash )"
 msgstr ""
 
 msgid "Duplicating wallet..."
@@ -703,7 +703,7 @@ msgid "EXPIRED"
 msgstr ""
 
 msgid ""
-"Each bitcoin wallet can generate billions of addresses from your 12-word "
+"Each mangacoin wallet can generate billions of addresses from your 12-word "
 "backup. A new address is automatically generated and shown each time you "
 "receive a payment."
 msgstr ""
@@ -1039,7 +1039,7 @@ msgstr ""
 
 msgid ""
 "I understand that if this app is moved to another device or deleted, my "
-"bitcoin can only be recovered with the backup phrase"
+"mangacoin can only be recovered with the backup phrase"
 msgstr ""
 
 msgid ""
@@ -1060,7 +1060,7 @@ msgid "I'm very happy"
 msgstr ""
 
 msgid ""
-"If enabled, Bitcoin Cash addresses will be shown using Copay style address, "
+"If enabled, Mangacoin Cash addresses will be shown using Copay style address, "
 "and not the new cashaddr format."
 msgstr ""
 
@@ -1127,9 +1127,6 @@ msgstr ""
 msgid "Insufficient funds for fee"
 msgstr ""
 
-msgid "Integrations"
-msgstr ""
-
 msgid "Invalid"
 msgstr ""
 
@@ -1168,7 +1165,7 @@ msgstr ""
 
 msgid ""
 "It's a good idea to avoid reusing addresses - this both protects your "
-"privacy and keeps your bitcoins secure against hypothetical attacks by "
+"privacy and keeps your mangacoins secure against hypothetical attacks by "
 "quantum computers."
 msgstr ""
 
@@ -1341,7 +1338,7 @@ msgstr ""
 msgid "No access key defined"
 msgstr ""
 
-msgid "No backup, no bitcoin."
+msgid "No backup, no mangacoin."
 msgstr ""
 
 msgid "No contacts yet"
@@ -1386,7 +1383,7 @@ msgstr ""
 msgid "Non BIP44 wallet"
 msgstr ""
 
-msgid "Non eligible BTC wallet"
+msgid "Non eligible MANGA wallet"
 msgstr ""
 
 msgid "Normal"
@@ -1420,14 +1417,14 @@ msgstr ""
 msgid "Not right now"
 msgstr ""
 
-msgid "Not valid bitcoin address"
+msgid "Not valid mangacoin address"
 msgstr ""
 
 msgid "Note"
 msgstr ""
 
 msgid ""
-"Note: if this BCH wallet was duplicated from a BTC wallet, they share the "
+"Note: if this BCH wallet was duplicated from a MANGA wallet, they share the "
 "same recovery phrase."
 msgstr ""
 
@@ -1532,7 +1529,7 @@ msgstr ""
 msgid "Paste the backup plain text code"
 msgstr ""
 
-msgid "Pay 0% fees to turn bitcoin into dollars."
+msgid "Pay 0% fees to turn mangacoin into dollars."
 msgstr ""
 
 msgid "Pay To"
@@ -1839,7 +1836,7 @@ msgstr ""
 msgid "Search a contact"
 msgstr ""
 
-msgid "Search or enter bitcoin address"
+msgid "Search or enter mangacoin address"
 msgstr ""
 
 msgid "Search your currency"
@@ -1866,7 +1863,7 @@ msgstr ""
 msgid "Self-signed Certificate"
 msgstr ""
 
-msgid "Selling Bitcoin..."
+msgid "Selling Mangacoin..."
 msgstr ""
 
 msgid "Send"
@@ -2015,7 +2012,7 @@ msgstr ""
 msgid "Spendable balance"
 msgstr ""
 
-msgid "Spending this balance will need significant Bitcoin network fees"
+msgid "Spending this balance will need significant Mangacoin network fees"
 msgstr ""
 
 msgid "Start"
@@ -2057,7 +2054,7 @@ msgstr ""
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr ""
 
-msgid "Take control of your money, get started with bitcoin."
+msgid "Take control of your money, get started with mangacoin."
 msgstr ""
 
 msgid "Tap and hold to show"
@@ -2084,18 +2081,18 @@ msgstr ""
 msgid "The Wallet Service URL"
 msgstr ""
 
-msgid "The amount of bitcoin immediately spendable from this wallet."
+msgid "The amount of mangacoin immediately spendable from this wallet."
 msgstr ""
 
 msgid ""
-"The amount of bitcoin stored in this wallet that is allocated as inputs to "
+"The amount of mangacoin stored in this wallet that is allocated as inputs to "
 "your pending transaction proposals. The amount is determined using unspent "
 "transaction outputs associated with this wallet and may be more than the "
 "actual amounts associated with your pending transaction proposals."
 msgstr ""
 
 msgid ""
-"The amount of bitcoin stored in this wallet with less than 1 blockchain "
+"The amount of mangacoin stored in this wallet with less than 1 blockchain "
 "confirmation."
 msgstr ""
 
@@ -2159,13 +2156,13 @@ msgid "The spend proposal is not pending"
 msgstr ""
 
 msgid ""
-"The testnet is an alternative Bitcoin block chain, to be used for testing. "
-"Testnet coins are separate and distinct from actual bitcoins, and do not "
-"have any value. This allows application developers or bitcoin testers to "
-"experiment, without having to use real bitcoins."
+"The testnet is an alternative Mangacoin block chain, to be used for testing. "
+"Testnet coins are separate and distinct from actual mangacoins, and do not "
+"have any value. This allows application developers or mangacoin testers to "
+"experiment, without having to use real mangacoins."
 msgstr ""
 
-msgid "The total amount of bitcoin stored in this wallet."
+msgid "The total amount of mangacoin stored in this wallet."
 msgstr ""
 
 msgid ""
@@ -2191,10 +2188,10 @@ msgstr ""
 msgid "This app is not available for your device."
 msgstr ""
 
-msgid "This app stores your bitcoin with cutting-edge security."
+msgid "This app stores your mangacoin with cutting-edge security."
 msgstr ""
 
-msgid "This bitcoin payment request has expired."
+msgid "This mangacoin payment request has expired."
 msgstr ""
 
 msgid ""
@@ -2222,8 +2219,8 @@ msgid ""
 msgstr ""
 
 msgid ""
-"This transaction amount is too small compared to current Bitcoin network "
-"fees. Spending these funds will need a Bitcoin network fee cost comparable "
+"This transaction amount is too small compared to current Mangacoin network "
+"fees. Spending these funds will need a Mangacoin network fee cost comparable "
 "to the funds itself."
 msgstr ""
 
@@ -2233,7 +2230,7 @@ msgid ""
 msgstr ""
 
 msgid ""
-"This wallet is not registered at the given Bitcore Wallet Service (BWS). "
+"This wallet is not registered at the given Mangacore Wallet Service (BWS). "
 "You can recreate it from the local information."
 msgstr ""
 
@@ -2243,7 +2240,7 @@ msgstr ""
 msgid "To"
 msgstr ""
 
-msgid "To get started, you'll need to create a bitcoin wallet and get some bitcoin."
+msgid "To get started, you'll need to create a mangacoin wallet and get some mangacoin."
 msgstr ""
 
 msgid "To {{reason}} you must first add your BitPay account - {{email}}"
@@ -2302,10 +2299,10 @@ msgstr ""
 msgid "Transactions without fee are not supported."
 msgstr ""
 
-msgid "Transfer to Bitcoin Cash Wallet"
+msgid "Transfer to Mangacoin Cash Wallet"
 msgstr ""
 
-msgid "Transfer to Bitcoin Wallet"
+msgid "Transfer to Mangacoin Wallet"
 msgstr ""
 
 msgid "Transfer to Contact"
@@ -2320,7 +2317,7 @@ msgstr ""
 msgid "Try again in {{expires}}"
 msgstr ""
 
-msgid "Turn bitcoin into dollars, swipe anywhere Visa® is accepted."
+msgid "Turn mangacoin into dollars, swipe anywhere Visa® is accepted."
 msgstr ""
 
 msgid "Type the recovery phrase (usually 12 words)"
@@ -2377,7 +2374,7 @@ msgstr ""
 msgid "Urgent"
 msgstr ""
 
-msgid "Use Bitcoin Cash Copay Style Addresses"
+msgid "Use Mangacoin Cash Copay Style Addresses"
 msgstr ""
 
 msgid "Use Unconfirmed Funds"
@@ -2633,7 +2630,7 @@ msgid ""
 "translation website. We’re looking forward to hearing from you!"
 msgstr ""
 
-msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
+msgid "You can scan mangacoin addresses, payment requests, paper wallets, and more."
 msgstr ""
 
 msgid ""
@@ -2641,7 +2638,7 @@ msgid ""
 "by visiting our project on GitHub."
 msgstr ""
 
-msgid "You can spend bitcoin at millions of websites and stores worldwide."
+msgid "You can spend mangacoin at millions of websites and stores worldwide."
 msgstr ""
 
 msgid "You can still export it from Advanced &gt; Export."
@@ -2650,7 +2647,7 @@ msgstr ""
 msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
 msgstr ""
 
-msgid "You control your bitcoin."
+msgid "You control your mangacoin."
 msgstr ""
 
 msgid "You could lose money"
@@ -2673,11 +2670,11 @@ msgstr ""
 msgid "Your Gift Cards"
 msgstr ""
 
-msgid "Your bitcoin wallet is ready!"
+msgid "Your mangacoin wallet is ready!"
 msgstr ""
 
 msgid ""
-"Your extended private keys are all that is needed to access your bitcoin "
+"Your extended private keys are all that is needed to access your mangacoin "
 "funds. Be sure to protect your private keys and store them only on secure "
 "devices. BitPay does not have access to your private keys, so you alone are "
 "responsible for your keys. If you share key access with external services, "
@@ -2737,7 +2734,7 @@ msgid "{{amountUnitStr}} Gift Card"
 msgstr ""
 
 msgid ""
-"{{appName}} depends on Bitcore Wallet Service (BWS) for blockchain "
+"{{appName}} depends on Mangacore Wallet Service (BWS) for blockchain "
 "information, networking and Copayer synchronization. The default "
 "configuration points to https://bws.bitpay.com (BitPay's public BWS "
 "instance)."
@@ -2746,7 +2743,7 @@ msgstr ""
 msgid "{{btx.feeRateStr}} of the total amount"
 msgstr ""
 
-msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
+msgid "{{fee}} will be deducted for mangacoin networking fees."
 msgstr ""
 
 msgid "{{params.appName}} BCH wallets use the CashAddr format by default"

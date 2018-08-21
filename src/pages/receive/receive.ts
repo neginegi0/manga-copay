@@ -59,6 +59,15 @@ export class ReceivePage extends WalletTabsChild {
 
   ionViewDidLoad() {
     this.setAddress();
+    if (this.wallet.needsBackup) {
+      const infoSheet = this.actionSheetProvider.createInfoSheet(
+        'paper-key-unverified'
+      );
+      infoSheet.present();
+      infoSheet.onDidDismiss(option => {
+        if (option) this.goToBackup();
+      });
+    }
     this.events.subscribe('Wallet/setAddress', () => {
       this.setAddress(true);
     });
@@ -71,7 +80,6 @@ export class ReceivePage extends WalletTabsChild {
       recipientType: 'wallet',
       name: this.wallet.name,
       color: this.wallet.color,
-      coin: this.wallet.coin,
       nextPage: 'CustomAmountPage',
       network: this.addressProvider.validateAddress(this.address).network
     });
@@ -91,7 +99,7 @@ export class ReceivePage extends WalletTabsChild {
         this.logger.warn(this.bwcErrorProvider.msg(err, 'Server Error'));
       })) as string;
     this.loading = false;
-    let address = await this.walletProvider.getAddressView(this.wallet, addr);
+    let address = await this.walletProvider.getAddressView(addr);
     if (this.address && this.address != address) {
       this.playAnimation = true;
     }
@@ -100,7 +108,6 @@ export class ReceivePage extends WalletTabsChild {
 
   private async updateQrAddress(address?, newAddr?: boolean): Promise<void> {
     let qrAddress = await this.walletProvider.getProtoAddress(
-      this.wallet,
       address
     );
     if (newAddr) {
@@ -162,7 +169,7 @@ export class ReceivePage extends WalletTabsChild {
   public showFullAddr(): void {
     const infoSheet = this.actionSheetProvider.createInfoSheet(
       'address-copied',
-      { address: this.address, coin: this.wallet.coin }
+      { address: this.address }
     );
     infoSheet.present();
   }

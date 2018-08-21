@@ -93,8 +93,7 @@ export class CreateWalletPage implements OnInit {
       recoveryPhrase: [null],
       derivationPath: [this.derivationPathByDefault],
       testnetEnabled: [false],
-      singleAddress: [false],
-      coin: [null, Validators.required]
+      singleAddress: [false]
     });
 
     this.setTotalCopayers(this.tc);
@@ -173,8 +172,7 @@ export class CreateWalletPage implements OnInit {
           : null,
       networkName: this.createForm.value.testnetEnabled ? 'testnet' : 'livenet',
       bwsurl: this.createForm.value.bwsURL,
-      singleAddress: this.createForm.value.singleAddress,
-      coin: this.createForm.value.coin
+      singleAddress: this.createForm.value.singleAddress
     };
 
     let setSeed = this.createForm.value.selectedSeed == 'set';

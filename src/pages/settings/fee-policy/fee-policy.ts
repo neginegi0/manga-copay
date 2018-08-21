@@ -6,7 +6,6 @@ import { Logger } from '../../../providers/logger/logger';
 import { ConfigProvider } from '../../../providers/config/config';
 import { FeeProvider } from '../../../providers/fee/fee';
 
-const COIN = 'btc';
 const NETWORK = 'livenet';
 
 @Component({
@@ -36,7 +35,7 @@ export class FeePolicyPage {
   ionViewDidEnter() {
     this.error = null;
     return this.feeProvider
-      .getFeeLevels(COIN)
+      .getFeeLevels()
       .then(data => {
         this.feeLevels = data['levels'];
         this.updateCurrentValues();

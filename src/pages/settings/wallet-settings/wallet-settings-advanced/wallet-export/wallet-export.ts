@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController, NavParams, ToastController } from 'ionic-angular';
+import { App, NavParams, ToastController } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 
 // native
@@ -12,19 +12,17 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 import { ActionSheetProvider } from '../../../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../../../providers/app/app';
 import { BackupProvider } from '../../../../../providers/backup/backup';
-import { ConfigProvider } from '../../../../../providers/config/config';
 import { PersistenceProvider } from '../../../../../providers/persistence/persistence';
 import { PlatformProvider } from '../../../../../providers/platform/platform';
 import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { WalletProvider } from '../../../../../providers/wallet/wallet';
-import { WalletTabsChild } from '../../../../wallet-tabs/wallet-tabs-child';
-import { WalletTabsProvider } from '../../../../wallet-tabs/wallet-tabs.provider';
+import { TabsPage } from '../../../../tabs/tabs';
 
 @Component({
   selector: 'page-wallet-export',
   templateUrl: 'wallet-export.html'
 })
-export class WalletExportPage extends WalletTabsChild {
+export class WalletExportPage {
   public wallet;
   public segments: string = 'file/text';
   public password: string = '';
@@ -40,11 +38,10 @@ export class WalletExportPage extends WalletTabsChild {
   public isIOS: boolean;
   public exportWalletInfo;
   public supported: boolean;
-  public showQrCode: boolean;
 
   constructor(
-    public profileProvider: ProfileProvider,
-    public navCtrl: NavController,
+    private app: App,
+    private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
     private navParams: NavParams,
     private formBuilder: FormBuilder,
@@ -57,11 +54,8 @@ export class WalletExportPage extends WalletTabsChild {
     private clipboard: Clipboard,
     public toastCtrl: ToastController,
     private translate: TranslateService,
-    private actionSheetProvider: ActionSheetProvider,
-    public walletTabsProvider: WalletTabsProvider,
-    private configProvider: ConfigProvider
+    private actionSheetProvider: ActionSheetProvider
   ) {
-    super(navCtrl, profileProvider, walletTabsProvider);
     this.exportWalletForm = this.formBuilder.group(
       {
         password: ['', Validators.required],
@@ -123,14 +117,11 @@ export class WalletExportPage extends WalletTabsChild {
       this.segments = 'qr-code';
     }
 
-    this.showQrCode = false;
-
     this.getPassword()
       .then((password: string) => {
         this.walletProvider
           .getEncodedWalletInfo(this.wallet, password)
           .then(code => {
-            this.showQrCode = true;
             if (!code) this.supported = false;
             else {
               this.supported = true;
@@ -140,15 +131,11 @@ export class WalletExportPage extends WalletTabsChild {
             this.segments = 'qr-code';
           })
           .catch((err: string) => {
-            this.supported = false;
             if (err) this.showErrorInfoSheet(err);
           });
       })
-      .catch(err => {
-        this.showQrCode = false;
-        this.segments = 'file/text';
-        if (err && err.message != 'FINGERPRINT_CANCELLED')
-          this.showErrorInfoSheet(err);
+      .catch((err: string) => {
+        if (err) this.showErrorInfoSheet(err);
       });
   }
 
@@ -190,7 +177,7 @@ export class WalletExportPage extends WalletTabsChild {
                 this.navParams.data.walletId
               )
               .then(() => {
-                this.close();
+                this.app.getRootNavs()[0].setRoot(TabsPage);
               })
               .catch(() => {
                 this.showErrorInfoSheet();
@@ -200,9 +187,8 @@ export class WalletExportPage extends WalletTabsChild {
             this.showErrorInfoSheet();
           });
       })
-      .catch(err => {
-        if (err && err.message != 'FINGERPRINT_CANCELLED')
-          this.showErrorInfoSheet(err);
+      .catch((err: string) => {
+        if (err) this.showErrorInfoSheet(err);
       });
   }
 
@@ -256,9 +242,8 @@ export class WalletExportPage extends WalletTabsChild {
               return resolve();
             });
         })
-        .catch(err => {
-          if (err && err.message != 'FINGERPRINT_CANCELLED')
-            this.showErrorInfoSheet(err);
+        .catch((err: string) => {
+          if (err) this.showErrorInfoSheet(err);
           return resolve();
         });
     });
@@ -295,14 +280,8 @@ export class WalletExportPage extends WalletTabsChild {
     showSuccess.present();
     let name =
       this.wallet.credentials.walletName || this.wallet.credentials.walletId;
-
-    let config = this.configProvider.get();
-
-    let alias =
-      config.aliasFor && config.aliasFor[this.wallet.credentials.walletId];
-
-    if (alias) {
-      name = alias + ' [' + name + ']';
+    if (this.wallet.alias) {
+      name = this.wallet.alias + ' [' + name + ']';
     }
     this.getBackup().then(backup => {
       let ew = backup;

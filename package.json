@@ -1,22 +1,22 @@
 {
   "name": "copay",
-  "description": "A Secure Bitcoin Wallet",
+  "description": "A Secure Mangacoin Wallet",
   "author": "BitPay",
   "version": "4.6.0",
   "keywords": [
-    "bitcoin",
+    "mangacoin",
     "wallet",
     "bitpay",
     "copay",
     "multisignature",
-    "bitcore"
+    "mangacore"
   ],
   "main": "www/index.html",
   "title": "Copay",
   "user-agent": "%name %ver (%osinfo)",
   "chromium-args": "--disable-password-generation --disable-devtools",
   "window": {
-    "title": "Copay – Copay Bitcoin Wallet",
+    "title": "Copay – Copay Mangacoin Wallet",
     "icon": "www/assets/img/app/icon.png",
     "toolbar": false,
     "show": false,
@@ -144,7 +144,6 @@
     "@zxing/ngx-scanner": "1.2.0",
     "angular2-moment": "1.7.1",
     "bitauth": "git+https://github.com/bitpay/bitauth.git#copay",
-    "bitcore-wallet-client": "6.7.5",
     "buffer-compare": "1.1.1",
     "cordova": "8.0.0",
     "cordova-android": "7.1.0",
@@ -182,6 +181,10 @@
     "ionic-plugin-keyboard": "2.2.1",
     "ionicons": "3.0.0",
     "lodash": "4.17.4",
+    "mangacore-lib": "https://github.com/neginegi0/mangacore-lib/archive/segwit.tar.gz",
+    "mangacore-mnemonic": "https://github.com/neginegi0/mangacore-mnemonic/archive/master.tar.gz",
+    "mangacore-payment-protocol": "https://github.com/neginegi0/mangacore-payment-protocol/archive/master.tar.gz",
+    "mangacore-wallet-client": "https://github.com/neginegi0/mangacore-wallet-client/archive/master.tar.gz",
     "ngx-qrcode2": "0.1.0",
     "papaparse": "4.3.6",
     "preconditions": "2.2.0",
@@ -265,9 +268,8 @@
       "cordova-plugin-ionic-webview": {},
       "cordova-custom-config": {},
       "cordova-plugin-customurlscheme": {
-        "URL_SCHEME": "bitcoin",
+        "URL_SCHEME": "mangacoin",
         "SECOND_URL_SCHEME": "copay",
-        "THIRD_URL_SCHEME": "bitcoincash",
         "ANDROID_SCHEME": " ",
         "ANDROID_HOST": " ",
         "ANDROID_PATHPREFIX": "/"

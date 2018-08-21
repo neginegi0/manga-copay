@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { App, Events, NavController, NavParams } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 
 // Pages
 import { ScanPage } from '../../scan/scan';
-import { TabsPage } from '../../tabs/tabs';
 
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
@@ -36,7 +35,6 @@ export class JoinWalletPage {
   private regex: RegExp;
 
   constructor(
-    private app: App,
     private configProvider: ConfigProvider,
     private form: FormBuilder,
     private navCtrl: NavController,
@@ -67,8 +65,7 @@ export class JoinWalletPage {
       ], // invitationCode == secret
       bwsURL: [this.defaults.bws.url],
       selectedSeed: ['new'],
-      recoveryPhrase: [null],
-      coin: [null, Validators.required]
+      recoveryPhrase: [null]
     });
 
     this.seedOptions = [
@@ -133,8 +130,7 @@ export class JoinWalletPage {
     let opts: Partial<WalletOptions> = {
       secret: this.joinForm.value.invitationCode,
       myName: this.joinForm.value.myName,
-      bwsurl: this.joinForm.value.bwsURL,
-      coin: this.joinForm.value.coin
+      bwsurl: this.joinForm.value.bwsURL
     };
 
     let setSeed = this.joinForm.value.selectedSeed == 'set';
@@ -186,12 +182,8 @@ export class JoinWalletPage {
         this.events.publish('status:updated');
         this.walletProvider.updateRemotePreferences(wallet);
         this.pushNotificationsProvider.updateSubscription(wallet);
-        this.app
-          .getRootNavs()[0]
-          .setRoot(TabsPage)
-          .then(() => {
-            this.events.publish('OpenWallet', wallet);
-          });
+        this.navCtrl.popToRoot();
+        this.events.publish('OpenWallet', wallet);
       })
       .catch(err => {
         this.onGoingProcessProvider.clear();

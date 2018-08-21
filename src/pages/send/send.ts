@@ -3,20 +3,16 @@ import { Events, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
-import { ActionSheetProvider } from '../../providers/action-sheet/action-sheet';
 import { AddressBookProvider } from '../../providers/address-book/address-book';
 import { AddressProvider } from '../../providers/address/address';
-import { AppProvider } from '../../providers/app/app';
-import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
-import { Coin, WalletProvider } from '../../providers/wallet/wallet';
+import { WalletProvider } from '../../providers/wallet/wallet';
 import { WalletTabsProvider } from '../wallet-tabs/wallet-tabs.provider';
 
 // Pages
-import { Observable } from 'rxjs/Observable';
 import { WalletTabsChild } from '../wallet-tabs/wallet-tabs-child';
 import { AmountPage } from './amount/amount';
 
@@ -24,7 +20,6 @@ export interface FlatWallet {
   color: string;
   name: string;
   recipientType: 'wallet';
-  coin: Coin;
   network: 'testnet' | 'mainnet';
   m: number;
   n: number;
@@ -70,10 +65,7 @@ export class SendPage extends WalletTabsChild {
     private popupProvider: PopupProvider,
     private addressProvider: AddressProvider,
     private events: Events,
-    walletTabsProvider: WalletTabsProvider,
-    private actionSheetProvider: ActionSheetProvider,
-    private externalLinkProvider: ExternalLinkProvider,
-    private appProvider: AppProvider
+    walletTabsProvider: WalletTabsProvider
   ) {
     super(navCtrl, profileProvider, walletTabsProvider);
   }
@@ -88,8 +80,7 @@ export class SendPage extends WalletTabsChild {
   }
 
   ionViewWillEnter() {
-    this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
-    this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
+    this.walletsBtc = this.profileProvider.getWallets({});
     this.hasBtcWallets = !_.isEmpty(this.walletsBtc);
     this.hasBchWallets = !_.isEmpty(this.walletsBch);
     this.walletBchList = this.getBchWalletsList();
@@ -128,7 +119,6 @@ export class SendPage extends WalletTabsChild {
           network: this.addressProvider.validateAddress(k).network,
           email: _.isObject(v) ? v.email : null,
           recipientType: 'contact',
-          coin: this.addressProvider.validateAddress(k).coin,
           getAddress: () => Promise.resolve(k)
         });
       });
@@ -152,7 +142,6 @@ export class SendPage extends WalletTabsChild {
       color: wallet.color,
       name: wallet.name,
       recipientType: 'wallet',
-      coin: wallet.coin,
       network: wallet.network,
       m: wallet.credentials.m,
       n: wallet.credentials.n,
@@ -163,30 +152,10 @@ export class SendPage extends WalletTabsChild {
   }
 
   private filterIrrelevantRecipients(recipient: {
-    coin: string;
     network: string;
   }): boolean {
     return this.wallet
-      ? this.wallet.coin === recipient.coin &&
-          this.wallet.network === recipient.network
-      : true;
-  }
-
-  public shouldShowZeroState() {
-    return (
-      this.wallet && this.wallet.status && !this.wallet.status.totalBalanceSat
-    );
-  }
-
-  public async goToReceive() {
-    await this.walletTabsProvider.goToTabIndex(0);
-    const coinName = this.wallet.coin === Coin.BTC ? 'bitcoin' : 'bitcoin cash';
-    const infoSheet = this.actionSheetProvider.createInfoSheet(
-      'receiving-bitcoin',
-      { coinName }
-    );
-    await Observable.timer(250).toPromise();
-    infoSheet.present();
+      ? this.wallet.network === recipient.network : true;
   }
 
   public showMore(): void {
@@ -197,29 +166,25 @@ export class SendPage extends WalletTabsChild {
   public openScanner(): void {
     this.scannerOpened = true;
     this.walletTabsProvider.setSendParams({
-      amount: this.navParams.get('amount'),
-      coin: this.navParams.get('coin')
+      amount: this.navParams.get('amount')
     });
     this.walletTabsProvider.setFromPage({ fromSend: true });
     this.events.publish('ScanFromWallet');
   }
 
   private checkIfValidAddress(address): void {
-    const validAddress = this.addressProvider.checkCoinAndNetwork(
-      this.wallet.coin,
+    const validAddress = this.addressProvider.checkNetwork(
       this.wallet.network,
       address
     );
     if (validAddress) {
       this.invalidAddress = false;
       this.incomingDataProvider.redir(this.search, {
-        amount: this.navParams.get('amount'),
-        coin: this.navParams.get('coin')
+        amount: this.navParams.get('amount')
       });
       this.search = '';
     } else {
       this.invalidAddress = true;
-      if (this.wallet.coin === 'bch') this.checkIfLegacy();
     }
   }
 
@@ -254,37 +219,8 @@ export class SendPage extends WalletTabsChild {
     }
   }
 
-  private checkIfLegacy() {
-    let usingLegacyAddress =
-      this.incomingDataProvider.isValidBitcoinCashLegacyAddress(this.search) ||
-      this.incomingDataProvider.isValidBitcoinCashUriWithLegacyAddress(
-        this.search
-      );
-
-    if (usingLegacyAddress) {
-      let appName = this.appProvider.info.nameCase;
-      const infoSheet = this.actionSheetProvider.createInfoSheet(
-        'legacy-address-info',
-        { appName }
-      );
-      infoSheet.present();
-      infoSheet.onDidDismiss(option => {
-        if (option) {
-          let url = 'https://bitpay.github.io/address-translator/';
-          this.externalLinkProvider.open(url);
-        }
-        this.search = '';
-      });
-    }
-  }
-
   public searchWallets(): void {
-    if (this.hasBchWallets && this.wallet.coin === 'bch') {
-      this.filteredWallets = this.walletBchList.filter(wallet => {
-        return _.includes(wallet.name.toLowerCase(), this.search.toLowerCase());
-      });
-    }
-    if (this.hasBtcWallets && this.wallet.coin === 'btc') {
+    if (this.hasBtcWallets) {
       this.filteredWallets = this.walletBtcList.filter(wallet => {
         return _.includes(wallet.name.toLowerCase(), this.search.toLowerCase());
       });
@@ -315,7 +251,6 @@ export class SendPage extends WalletTabsChild {
           name: item.name,
           email: item.email,
           color: item.color,
-          coin: item.coin,
           network: item.network
         });
       })

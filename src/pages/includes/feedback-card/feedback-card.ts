@@ -6,9 +6,11 @@ import { Logger } from '../../../providers/logger/logger';
 // providers
 import { AppProvider } from '../../../providers/app/app';
 import { PersistenceProvider } from '../../../providers/persistence/persistence';
+import { PlatformProvider } from '../../../providers/platform/platform';
 import { ReplaceParametersProvider } from '../../../providers/replace-parameters/replace-parameters';
 
 // pages
+import { FeedbackPage } from '../../../pages/feedback/feedback/feedback';
 import { SendFeedbackPage } from '../../../pages/feedback/send-feedback/send-feedback';
 
 @Component({
@@ -21,15 +23,19 @@ export class FeedbackCardPage {
   public feedbackCardTitle: string;
   public isShowRateCard: boolean;
 
+  private isCordova: boolean;
+
   constructor(
     private appProvider: AppProvider,
     private navCtrl: NavController,
     private logger: Logger,
     private persistenceProvider: PersistenceProvider,
     private translate: TranslateService,
+    private platformProvider: PlatformProvider,
     private replaceParametersProvider: ReplaceParametersProvider
   ) {
     this.score = 0;
+    this.isCordova = this.platformProvider.isCordova;
     this.isShowRateCard = false;
   }
 
@@ -74,9 +80,10 @@ export class FeedbackCardPage {
 
   public goFeedbackFlow(): void {
     this.hideCard();
-    this.navCtrl.push(SendFeedbackPage, {
-      score: this.score,
-      fromCard: true
-    });
+    if (this.isCordova && this.score == 5) {
+      this.navCtrl.push(FeedbackPage, { score: this.score });
+    } else {
+      this.navCtrl.push(SendFeedbackPage, { score: this.score });
+    }
   }
 }

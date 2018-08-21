@@ -32,19 +32,19 @@ msgstr "Beoordelingen van 5 sterren helpen ons het gebruik van {{appName}} te la
 msgid "A member of the team will review your feedback as soon as possible."
 msgstr "Een lid van het team zal zo spoedig mogelijk uw feedback bekijken."
 
-msgid "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
+msgid "A total of {{amountAboveMaxSizeStr}} MANGA were excluded. The maximum size allowed for a transaction was exceeded."
 msgstr ""
 
-msgid "A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
+msgid "A total of {{amountBelowFeeStr}} MANGA were excluded. These funds come from UTXOs smaller than the network fee provided."
 msgstr ""
 
 msgid "A total of {{amountStr}} ({{fiatAmount | currency}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal | currency}} {{currencyIsoCode}}). Would you like to proceed?"
 msgstr ""
 
-msgid "A total of {{fee}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
+msgid "A total of {{fee}} MANGA were excluded. The maximum size allowed for a transaction was exceeded."
 msgstr ""
 
-msgid "A total of {{fee}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
+msgid "A total of {{fee}} MANGA were excluded. These funds come from UTXOs smaller than the network fee provided."
 msgstr ""
 
 msgid "About"
@@ -2433,7 +2433,7 @@ msgstr ""
 msgid "{{btx.feeRateStr}} of the total amount"
 msgstr ""
 
-msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
+msgid "{{fee}} MANGA will be deducted for bitcoin networking fees."
 msgstr ""
 
 msgid "{{tx.feeRateStr}} of the total amount"

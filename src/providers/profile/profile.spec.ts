@@ -8,16 +8,15 @@ describe('Profile Provider', () => {
   const walletFixture = {
     api1: {
       id: 'eabee25b-d6ab-4b11-8b76-88570d826914',
-      cachedBalance: '10.00 BTC',
+      cachedBalance: '10.00 MANGA',
       cachedBalanceUpdatedOn: null,
       credentials: {
-        coin: 'btc',
         network: 'livenet',
         n: 1,
         m: 1
       },
       status: {
-        availableBalanceSat: 1000000000 // 10 BTC
+        availableBalanceSat: 1000000000 // 10 MANGA
       },
       isComplete: () => {
         return true;
@@ -26,10 +25,9 @@ describe('Profile Provider', () => {
     },
     api2: {
       id: 'zxccv25b-d6ab-4b11-8b76-88570d822222',
-      cachedBalance: '5.00 BCH',
+      cachedBalance: '5.00 MANGA',
       cachedBalanceUpdatedOn: null,
       credentials: {
-        coin: 'bch',
         network: 'livenet',
         n: 1,
         m: 1
@@ -44,16 +42,15 @@ describe('Profile Provider', () => {
     },
     api3: {
       id: 'qwert25b-d6ab-4b11-8b76-88570d833333',
-      cachedBalance: '1.50 BTC',
+      cachedBalance: '1.50 MANGA',
       cachedBalanceUpdatedOn: null,
       credentials: {
-        coin: 'btc',
         network: 'testnet',
         n: 2,
         m: 2
       },
       status: {
-        availableBalanceSat: 150000000 // 1.50 BTC
+        availableBalanceSat: 150000000 // 1.50 MANGA
       },
       isComplete: () => {
         return true;
@@ -72,7 +69,7 @@ describe('Profile Provider', () => {
   class PersistenceProviderMock {
     constructor() {}
     getBalanceCache() {
-      return Promise.resolve('0.00 BTC');
+      return Promise.resolve('0.00 MANGA');
     }
     setWalletOrder() {
       return Promise.resolve();
@@ -99,7 +96,6 @@ describe('Profile Provider', () => {
 
     it('should get successfully all wallets when opts are provided', () => {
       const opts = {
-        coin: 'btc',
         network: 'testnet',
         n: 2,
         m: 2,
@@ -113,7 +109,6 @@ describe('Profile Provider', () => {
 
     it('should not return any wallet when there is no wallets validating provided opts', () => {
       const opts = {
-        coin: 'bch',
         network: 'livenet',
         minAmount: 1000000000
       };

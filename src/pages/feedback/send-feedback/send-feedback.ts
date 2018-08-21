@@ -1,7 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { ModalController, NavController, NavParams } from 'ionic-angular';
+import {
+  ModalController,
+  Navbar,
+  NavController,
+  NavParams
+} from 'ionic-angular';
 import * as _ from 'lodash';
 
 // native
@@ -18,6 +23,7 @@ import { AppProvider } from '../../../providers/app/app';
 import { ConfigProvider } from '../../../providers/config/config';
 import { FeedbackProvider } from '../../../providers/feedback/feedback';
 import { OnGoingProcessProvider } from '../../../providers/on-going-process/on-going-process';
+import { PersistenceProvider } from '../../../providers/persistence/persistence';
 import { PopupProvider } from '../../../providers/popup/popup';
 
 // pages
@@ -28,6 +34,8 @@ import { FinishModalPage } from '../../finish/finish';
   templateUrl: 'send-feedback.html'
 })
 export class SendFeedbackPage {
+  @ViewChild(Navbar)
+  navBar: Navbar;
   @ViewChild('focusMe')
   feedbackTextarea;
 
@@ -39,7 +47,6 @@ export class SendFeedbackPage {
   public feedbackForm: FormGroup;
   public leavingFeedback: boolean;
   public isCordova: boolean;
-  public fromCard: boolean;
 
   constructor(
     private actionSheetProvider: ActionSheetProvider,
@@ -54,6 +61,7 @@ export class SendFeedbackPage {
     private onGoingProcessProvider: OnGoingProcessProvider,
     private feedbackProvider: FeedbackProvider,
     private formBuilder: FormBuilder,
+    private persistenceProvider: PersistenceProvider,
     private popupProvider: PopupProvider,
     private translate: TranslateService,
     private device: Device
@@ -64,7 +72,6 @@ export class SendFeedbackPage {
         Validators.compose([Validators.minLength(1), Validators.required])
       ]
     });
-    this.fromCard = this.navParams.data.fromCard;
     this.score = this.navParams.data.score;
     this.appName = this.appProvider.info.nameCase;
     this.leavingFeedback = false;
@@ -72,6 +79,15 @@ export class SendFeedbackPage {
   }
 
   ionViewWillEnter() {
+    this.navBar.backButtonClick = () => {
+      this.persistenceProvider.getFeedbackInfo().then(info => {
+        let feedbackInfo = info;
+        feedbackInfo.sent = false;
+        this.persistenceProvider.setFeedbackInfo(feedbackInfo);
+        this.navCtrl.pop();
+      });
+    };
+
     switch (this.score) {
       case 1:
         this.reaction = this.translate.instant('Ouch!');
@@ -105,26 +121,28 @@ export class SendFeedbackPage {
       'appreciate-review'
     );
     infoSheet.present();
-    infoSheet.onDidDismiss(async option => {
-      if (!option) return;
+    infoSheet.onDidDismiss(async () => {
       if (this.launchReview.isRatingSupported()) {
-        this.launchReview.rating();
+        this.launchReview.rating().then(val => {
+          if (val == 'dismissed') this.navCtrl.popToRoot({ animate: false });
+        });
       } else {
         await this.launchReview.launch();
+        this.navCtrl.popToRoot({ animate: false });
       }
     });
   }
 
   public leaveFeedback() {
-    this.leavingFeedback = this.leavingFeedback ? false : true;
-    if (this.leavingFeedback)
-      setTimeout(() => {
-        this.feedbackTextarea.setFocus();
-      }, 50);
+    this.leavingFeedback = true;
+    setTimeout(() => {
+      this.feedbackTextarea.setFocus();
+    }, 150);
   }
 
   public async openExternalLink(url: string): Promise<void> {
     await this.externalLinkProvider.open(url);
+    this.navCtrl.popToRoot({ animate: false });
   }
 
   public async sendFeedback(feedback: string, goHome: boolean): Promise<void> {

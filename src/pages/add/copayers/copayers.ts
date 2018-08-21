@@ -2,9 +2,6 @@ import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Events, NavParams, ViewController } from 'ionic-angular';
 
-// Native
-import { SocialSharing } from '@ionic-native/social-sharing';
-
 // Providers
 import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { AppProvider } from '../../../providers/app/app';
@@ -39,7 +36,6 @@ export class CopayersPage {
     private platformProvider: PlatformProvider,
     private popupProvider: PopupProvider,
     private profileProvider: ProfileProvider,
-    private socialSharing: SocialSharing,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private walletProvider: WalletProvider,
     private translate: TranslateService,
@@ -117,8 +113,8 @@ export class CopayersPage {
     this.profileProvider
       .deleteWalletClient(this.wallet)
       .then(() => {
-        this.events.publish('status:updated');
         this.onGoingProcessProvider.clear();
+
         this.pushNotificationsProvider.unsubscribe(this.wallet);
         this.viewCtrl.dismiss();
       })
@@ -134,9 +130,5 @@ export class CopayersPage {
       secret: this.secret
     });
     infoSheet.present();
-  }
-
-  public shareAddress(): void {
-    this.socialSharing.share(this.secret);
   }
 }

@@ -43,14 +43,14 @@ export class AltCurrencyPage {
         isoCode: 'LTL'
       },
       {
-        isoCode: 'BTC'
+        isoCode: 'MANGA'
       }
     ];
   }
 
   ionViewWillEnter() {
     this.rate
-      .whenRatesAvailable('btc')
+      .whenRatesAvailable()
       .then(() => {
         this.completeAlternativeList = this.rate.listAlternatives(true);
         let idx = _.keyBy(this.unusedCurrencyList, 'isoCode');

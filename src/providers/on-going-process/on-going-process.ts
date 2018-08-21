@@ -57,8 +57,8 @@ export class OnGoingProcessProvider {
       generatingNewAddress: this.translate.instant('Generating new address...'),
       sendingByEmail: this.translate.instant('Preparing addresses...'),
       sending2faCode: this.translate.instant('Sending 2FA code...'),
-      buyingBitcoin: this.translate.instant('Buying Bitcoin...'),
-      sellingBitcoin: this.translate.instant('Selling Bitcoin...'),
+      buyingMangacoin: this.translate.instant('Buying Mangacoin...'),
+      sellingMangacoin: this.translate.instant('Selling Mangacoin...'),
       fetchingBitPayAccount: this.translate.instant(
         'Fetching BitPay Account...'
       ),

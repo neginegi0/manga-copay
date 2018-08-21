@@ -22,13 +22,11 @@ export class PayproProvider {
 
   public getPayProDetails(
     uri: string,
-    coin: string,
     disableLoader?: boolean
   ): Promise<any> {
     return new Promise((resolve, reject) => {
       let wallet = this.profileProvider.getWallets({
-        onlyComplete: true,
-        coin
+        onlyComplete: true
       })[0];
 
       if (!wallet) return resolve();

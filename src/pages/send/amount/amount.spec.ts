@@ -2,7 +2,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TestUtils } from '../../../test';
 
 import { RateProvider } from '../../../providers/rate/rate';
-import { Coin } from '../../../providers/wallet/wallet';
 import { AmountPage } from './amount';
 
 describe('AmountPage', () => {
@@ -11,7 +10,6 @@ describe('AmountPage', () => {
   let testBed: typeof TestBed;
 
   const wallet = {
-    coin: 'bch',
     status: {
       totalBalanceStr: '1.000000',
       totalBalanceSat: 100000000,
@@ -51,7 +49,7 @@ describe('AmountPage', () => {
       spyOn(rateProvider, 'getRate').and.returnValue(1000000);
       const spy = spyOn(rateProvider, 'toFiat').and.returnValue(1000000);
       instance.sendMax();
-      expect(spy).toHaveBeenCalledWith(100000000, 'USD', Coin.BCH);
+      expect(spy).toHaveBeenCalledWith(100000000, 'USD');
       expect(instance.expression).toBe('1000000.00');
     });
 

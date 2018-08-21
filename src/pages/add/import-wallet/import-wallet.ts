@@ -95,8 +95,7 @@ export class ImportWalletPage {
       filePassword: [null],
       derivationPath: [this.derivationPathByDefault, Validators.required],
       testnetEnabled: [false],
-      bwsURL: [this.defaults.bws.url],
-      coin: [null, Validators.required]
+      bwsURL: [this.defaults.bws.url]
     });
     this.events.subscribe('update:words', data => {
       this.processWalletInfo(data.value);
@@ -121,7 +120,6 @@ export class ImportWalletPage {
         this.file = null;
         this.formFile = null;
         this.importForm.get('words').setValidators([Validators.required]);
-        this.importForm.get('coin').setValidators([Validators.required]);
         this.importForm.get('filePassword').clearValidators();
         if (this.isCordova || this.isSafari)
           this.importForm.get('backupText').clearValidators();
@@ -137,7 +135,6 @@ export class ImportWalletPage {
           .get('filePassword')
           .setValidators([Validators.required]);
         this.importForm.get('words').clearValidators();
-        this.importForm.get('coin').clearValidators();
         break;
 
       default:
@@ -150,7 +147,6 @@ export class ImportWalletPage {
     this.importForm.get('file').updateValueAndValidity();
     this.importForm.get('filePassword').updateValueAndValidity();
     this.importForm.get('backupText').updateValueAndValidity();
-    this.importForm.get('coin').updateValueAndValidity();
   }
 
   normalizeMnemonic(words: string) {
@@ -172,8 +168,7 @@ export class ImportWalletPage {
       data: parsedCode[1],
       network: parsedCode[2],
       derivationPath: parsedCode[3],
-      hasPassphrase: parsedCode[4] == 'true' ? true : false,
-      coin: parsedCode[5]
+      hasPassphrase: parsedCode[4] == 'true' ? true : false
     };
     if (!info.data) {
       const errorInfoSheet = this.actionSheetProvider.createInfoSheet(
@@ -197,7 +192,6 @@ export class ImportWalletPage {
     this.importForm.controls['testnetEnabled'].setValue(isTestnet);
     this.importForm.controls['derivationPath'].setValue(info.derivationPath);
     this.importForm.controls['words'].setValue(info.data);
-    this.importForm.controls['coin'].setValue(info.coin);
   }
 
   public setDerivationPath(): void {
@@ -258,12 +252,7 @@ export class ImportWalletPage {
           this.profileProvider.setOnboardingCompleted();
           this.navCtrl.push(DisclaimerPage);
         } else {
-          this.app
-            .getRootNavs()[0]
-            .setRoot(TabsPage)
-            .then(() => {
-              this.events.publish('OpenWallet', wallet);
-            });
+          this.app.getRootNavs()[0].setRoot(TabsPage);
         }
       })
       .catch(err => {
@@ -346,7 +335,6 @@ export class ImportWalletPage {
     } else {
       let opts: Partial<WalletOptions> = {};
       opts.bwsurl = this.importForm.value.bwsURL;
-      opts.coin = this.importForm.value.coin;
       this.importBlob(backupText, opts);
     }
   }
@@ -378,7 +366,6 @@ export class ImportWalletPage {
     opts.account = pathData.account;
     opts.networkName = pathData.networkName;
     opts.derivationStrategy = pathData.derivationStrategy;
-    opts.coin = this.importForm.value.coin;
 
     let words: string = this.importForm.value.words || null;
 
@@ -427,7 +414,6 @@ export class ImportWalletPage {
         // DONE === 2
         let opts: Partial<WalletOptions> = {};
         opts.bwsurl = this.importForm.value.bwsURL;
-        opts.coin = this.importForm.value.coin;
         this.importBlob(this.reader.result, opts);
       }
     };

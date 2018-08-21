@@ -21,9 +21,6 @@
         <div (longPress)="toggleBalance()">
           <div (tap)="updateAll(true)" *ngIf="!updateStatusError && !wallet.balanceHidden && !wallet.scanning && wallet.status">
             <div class="balance-str">{{wallet.status.totalBalanceStr}}</div>
-            <div class="balance-alt-str">
-              {{wallet.status.totalBalanceAlternative}} {{wallet.status.alternativeIsoCode}}
-            </div>
           </div>
 
           <div class="balance-hidden" *ngIf="!updateStatusError && wallet.balanceHidden  && !wallet.scanning">
@@ -59,7 +56,7 @@
         </div>
         <div class="balance-error" *ngIf="walletNotRegistered" (tap)="recreate()">
           <span class="title">Tap to recreate</span>
-          <div translate>This wallet is not registered at the given Bitcore Wallet Service (BWS). You can recreate it from the local information.</div>
+          <div translate>This wallet is not registered at the given Mangacore Wallet Service (BWS). You can recreate it from the local information.</div>
         </div>
       </expandable-header-primary>
       <expandable-header-footer class="wallet-info" *ngIf="wallet" style="display: flex; align-items: center">
@@ -90,7 +87,7 @@
     </expandable-header>
 
     <div *ngIf="wallet.network == 'testnet'" class="box-notification warning">
-      <a class="energized" (click)="openExternalLink('https://support.bitpay.com/hc/en-us/articles/360004102011-What-is-testnet-How-do-I-avoid-testnet-Bitcoin-scams-')">
+      <a class="energized" (click)="openExternalLink('https://support.bitpay.com/hc/en-us/articles/360004102011-What-is-testnet-How-do-I-avoid-testnet-Mangacoin-scams-')">
         <ion-icon name="warning"></ion-icon>
         {{'Learn more about testnet blockchain' | translate}}
         <ion-icon name="arrow-forward"></ion-icon>
@@ -100,7 +97,7 @@
     <div *ngIf="lowUtxosWarning" class="box-notification warning">
       <a class="energized" (click)="openAddresses()">
         <ion-icon name="alert"></ion-icon>
-        {{'Spending this balance will need significant Bitcoin network fees'|translate}}
+        {{'Spending this balance will need significant Mangacoin network fees'|translate}}
         <ion-icon name="arrow-forward"></ion-icon>
       </a>
     </div>
@@ -228,7 +225,7 @@
 
               <ion-note item-end text-end>
                 <div class="amount">
-                  <span [ngClass]="{'received': tx.action == 'received'}" *ngIf="tx.action != 'invalid'">{{tx.amount | satToUnit: wallet.coin}}</span>
+                  <span [ngClass]="{'received': tx.action == 'received'}" *ngIf="tx.action != 'invalid'">{{tx.amountStr}}</span>
                   <span class="double-spend" *ngIf="tx.action == 'invalid'" translate>(possible double spend)</span>
                 </div>
                 <div class="date">

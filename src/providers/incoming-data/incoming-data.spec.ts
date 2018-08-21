@@ -147,10 +147,10 @@ describe('Provider: Incoming Data Provider', () => {
         expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
       });
     });
-    it('Should handle BTC and BCH BitPay Invoices', () => {
+    it('Should handle MANGA and BCH BitPay Invoices', () => {
       let data = [
-        'bitcoin:?r=https://bitpay.com/i/CtcM753gnZ4Wpr5pmXU6i9',
-        'bitcoincash:?r=https://bitpay.com/i/Rtz1RwWA7kdRRU3Wyo4YDY'
+        'mangacoin:?r=https://bitpay.com/i/CtcM753gnZ4Wpr5pmXU6i9',
+        'mangacoincash:?r=https://bitpay.com/i/Rtz1RwWA7kdRRU3Wyo4YDY'
       ];
       data.forEach(element => {
         expect(
@@ -161,7 +161,7 @@ describe('Provider: Incoming Data Provider', () => {
         );
       });
     });
-    it('Should handle Bitcoin cash Copay/BitPay format and CashAddr format plain Address', () => {
+    it('Should handle Mangacoin cash Copay/BitPay format and CashAddr format plain Address', () => {
       let data = [
         'qr00upv8qjgkym8zng3f663n9qte9ljuqqcs8eep5w',
         'CcnxtMfvBHGTwoKGPSuezEuYNpGPJH6tjN'
@@ -171,71 +171,37 @@ describe('Provider: Incoming Data Provider', () => {
           incomingDataProvider.redir(element, { activePage: 'ScanPage' })
         ).toBe(true);
         expect(loggerSpy).toHaveBeenCalledWith(
-          'Incoming-data: Bitcoin Cash plain address'
+          'Incoming-data: Mangacoin Cash plain address'
         );
         expect(actionSheetSpy).toHaveBeenCalledWith({
           data: {
             data: element,
-            type: 'bitcoinAddress',
-            coin: 'bch'
+            type: 'mangacoinAddress'
           }
         });
       });
     });
-    it('Should handle Bitcoin cash Copay/BitPay format and CashAddr format URI', () => {
+    it('Should handle Mangacoin URI', () => {
       let data = [
-        'bitcoincash:CcnxtMfvBHGTwoKGPSuezEuYNpGPJH6tjN',
-        'bitcoincash:qr00upv8qjgkym8zng3f663n9qte9ljuqqcs8eep5w'
-      ];
-
-      data.forEach(element => {
-        let parsed = bwcProvider.getBitcoreCash().URI(element);
-        let addr = parsed.address ? parsed.address.toString() : '';
-
-        // keep address in original format
-        if (parsed.address && element.indexOf(addr) < 0) {
-          addr = parsed.address.toCashAddress();
-        }
-        let stateParams = {
-          toAddress: addr,
-          description: null,
-          coin: 'bch'
-        };
-        let nextView = {
-          name: 'AmountPage',
-          params: stateParams
-        };
-        expect(
-          incomingDataProvider.redir(element, { activePage: 'ScanPage' })
-        ).toBe(true);
-        expect(loggerSpy).toHaveBeenCalledWith(
-          'Incoming-data: Bitcoin Cash URI'
-        );
-        expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
-      });
-    });
-    it('Should handle Bitcoin URI', () => {
-      let data = [
-        'bitcoin:1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa', // Genesis Bitcoin Address
-        'bitcoin:1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa?message=test%20message', // Bitcoin Address with message and not amount
-        'bitcoin:1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa?amount=1.0000', // Bitcoin Address with amount
-        'bitcoin:1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa?amount=1.0000&label=Genesis%20Bitcoin%20Address&message=test%20message' // Basic Payment Protocol
+        'mangacoin:1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa', // Genesis Mangacoin Address
+        'mangacoin:1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa?message=test%20message', // Mangacoin Address with message and not amount
+        'mangacoin:1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa?amount=1.0000', // Mangacoin Address with amount
+        'mangacoin:1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa?amount=1.0000&label=Genesis%20Mangacoin%20Address&message=test%20message' // Basic Payment Protocol
       ];
       data.forEach(element => {
-        let parsed = bwcProvider.getBitcore().URI(element);
+        let parsed = bwcProvider.getMangacore().URI(element);
         let addr = parsed.address ? parsed.address.toString() : '';
         let message = parsed.message;
         let amount = parsed.amount ? parsed.amount : '';
         expect(
           incomingDataProvider.redir(element, { activePage: 'ScanPage' })
         ).toBe(true);
-        expect(loggerSpy).toHaveBeenCalledWith('Incoming-data: Bitcoin URI');
+        expect(loggerSpy).toHaveBeenCalledWith('Incoming-data: Mangacoin URI');
         if (amount) {
           let stateParams = {
             amount,
             toAddress: addr,
-            description: message,
-            coin: 'btc'
+            description: message
           };
           let nextView = {
             name: 'ConfirmPage',
@@ -245,8 +211,7 @@ describe('Provider: Incoming Data Provider', () => {
         } else {
           let stateParams = {
             toAddress: addr,
-            description: message,
-            coin: 'btc'
+            description: message
           };
           let nextView = {
             name: 'AmountPage',
@@ -257,35 +222,34 @@ describe('Provider: Incoming Data Provider', () => {
       });
     });
     it(
-      'Should Handle Bitcoin Cash URI with legacy address',
+      'Should Handle Mangacoin Cash URI with legacy address',
       fakeAsync(() => {
-        let data = 'bitcoincash:1ML5KKKrJEHw3fQqhhajQjHWkh3yKhNZpa';
+        let data = 'mangacoincash:1ML5KKKrJEHw3fQqhhajQjHWkh3yKhNZpa';
         expect(
           incomingDataProvider.redir(data, { activePage: 'ScanPage' })
         ).toBe(true);
         expect(loggerSpy).toHaveBeenCalledWith(
-          'Incoming-data: Bitcoin Cash URI with legacy address'
+          'Incoming-data: Mangacoin Cash URI with legacy address'
         );
 
         let parsed = bwcProvider
-          .getBitcore()
-          .URI(data.replace(/^bitcoincash:/, 'bitcoin:'));
+          .getMangacore()
+          .URI(data.replace(/^mangacoincash:/, 'mangacoin:'));
 
         let oldAddr = parsed.address ? parsed.address.toString() : '';
 
         let a = bwcProvider
-          .getBitcore()
+          .getMangacore()
           .Address(oldAddr)
           .toObject();
         let addr = bwcProvider
-          .getBitcoreCash()
+          .getMangacore()
           .Address.fromObject(a)
           .toString();
 
         let stateParams = {
           toAddress: addr,
-          description: null,
-          coin: 'bch'
+          description: null
         };
         let nextView = {
           name: 'AmountPage',
@@ -295,23 +259,22 @@ describe('Provider: Incoming Data Provider', () => {
         expect(eventsSpy).toHaveBeenCalledWith('IncomingDataRedir', nextView);
       })
     );
-    it('Should handle Bitcoin Livenet and Testnet Plain Address', () => {
+    it('Should handle Mangacoin Livenet and Testnet Plain Address', () => {
       let data = [
-        '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa', // Genesis Bitcoin Address
-        'mpXwg4jMtRhuSpVq4xS3HFHmCmWp9NyGKt' // Genesis Testnet3 Bitcoin Address
+        '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa', // Genesis Mangacoin Address
+        'mpXwg4jMtRhuSpVq4xS3HFHmCmWp9NyGKt' // Genesis Testnet3 Mangacoin Address
       ];
       data.forEach(element => {
         expect(
           incomingDataProvider.redir(element, { activePage: 'ScanPage' })
         ).toBe(true);
         expect(loggerSpy).toHaveBeenCalledWith(
-          'Incoming-data: Bitcoin plain address'
+          'Incoming-data: Mangacoin plain address'
         );
         expect(actionSheetSpy).toHaveBeenCalledWith({
           data: {
             data: element,
-            type: 'bitcoinAddress',
-            coin: 'btc'
+            type: 'mangacoinAddress'
           }
         });
       });
@@ -330,8 +293,7 @@ describe('Provider: Incoming Data Provider', () => {
         expect(actionSheetSpy).toHaveBeenCalledWith({
           data: {
             data: element,
-            type: 'privateKey',
-            fromHomeCard: undefined
+            type: 'privateKey'
           }
         });
       });

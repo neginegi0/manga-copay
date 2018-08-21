@@ -8,6 +8,7 @@ import { Events, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
 // Providers
+import { ActionSheetProvider } from '../../../providers/action-sheet/action-sheet';
 import { Config, ConfigProvider } from '../../../providers/config/config';
 import { FilterProvider } from '../../../providers/filter/filter';
 import { Logger } from '../../../providers/logger/logger';
@@ -17,16 +18,8 @@ import { RateProvider } from '../../../providers/rate/rate';
 import { TxFormatProvider } from '../../../providers/tx-format/tx-format';
 
 // Pages
+import { Observable } from 'rxjs/Observable';
 import { ProfileProvider } from '../../../providers/profile/profile';
-import { Coin } from '../../../providers/wallet/wallet';
-import { BuyAmazonPage } from '../../integrations/amazon/buy-amazon/buy-amazon';
-import { BitPayCardTopUpPage } from '../../integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
-import { BuyCoinbasePage } from '../../integrations/coinbase/buy-coinbase/buy-coinbase';
-import { SellCoinbasePage } from '../../integrations/coinbase/sell-coinbase/sell-coinbase';
-import { BuyGlideraPage } from '../../integrations/glidera/buy-glidera/buy-glidera';
-import { SellGlideraPage } from '../../integrations/glidera/sell-glidera/sell-glidera';
-import { BuyMercadoLibrePage } from '../../integrations/mercado-libre/buy-mercado-libre/buy-mercado-libre';
-import { ShapeshiftConfirmPage } from '../../integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 import { WalletTabsChild } from '../../wallet-tabs/wallet-tabs-child';
 import { WalletTabsProvider } from '../../wallet-tabs/wallet-tabs.provider';
@@ -39,12 +32,12 @@ import { ConfirmPage } from '../confirm/confirm';
 export class AmountPage extends WalletTabsChild {
   private LENGTH_EXPRESSION_LIMIT: number;
   private availableUnits;
-  public unit: string;
+  private unit: string;
   private reNr: RegExp;
   private reOp: RegExp;
   private nextView;
   private fixedUnit: boolean;
-  public fiatCode: string;
+  private fiatCode: string;
   private altUnitIndex: number;
   private unitIndex: number;
   private unitToSatoshi: number;
@@ -78,6 +71,7 @@ export class AmountPage extends WalletTabsChild {
   public requestingAmount: boolean;
 
   constructor(
+    private actionSheetProvider: ActionSheetProvider,
     private configProvider: ConfigProvider,
     private filterProvider: FilterProvider,
     private logger: Logger,
@@ -183,47 +177,13 @@ export class AmountPage extends WalletTabsChild {
   private setAvailableUnits(): void {
     this.availableUnits = [];
 
-    const parentWalletCoin = this.wallet && this.wallet.coin;
-
-    if (parentWalletCoin === 'btc' || !parentWalletCoin) {
-      this.availableUnits.push({
-        name: 'Bitcoin',
-        id: 'btc',
-        shortName: 'BTC'
-      });
-    }
-
-    if (parentWalletCoin === 'bch' || !parentWalletCoin) {
-      this.availableUnits.push({
-        name: 'Bitcoin Cash',
-        id: 'bch',
-        shortName: 'BCH'
-      });
-    }
+    this.availableUnits.push({
+      name: 'Mangacoin',
+      id: 'manga',
+      shortName: 'MANGA'
+    });
 
     this.unitIndex = 0;
-
-    if (this.navParams.data.coin) {
-      let coins = this.navParams.data.coin.split(',');
-      let newAvailableUnits = [];
-
-      _.each(coins, (c: string) => {
-        let coin = _.find(this.availableUnits, {
-          id: c
-        });
-        if (!coin) {
-          this.logger.warn(
-            'Could not find desired coin:' + this.navParams.data.coin
-          );
-        } else {
-          newAvailableUnits.push(coin);
-        }
-      });
-
-      if (newAvailableUnits.length > 0) {
-        this.availableUnits = newAvailableUnits;
-      }
-    }
 
     //  currency have preference
     let fiatName;
@@ -261,34 +221,8 @@ export class AmountPage extends WalletTabsChild {
   private getNextView() {
     let nextPage;
     switch (this.navParams.data.nextPage) {
-      case 'BitPayCardTopUpPage':
-        this.showSendMax = true;
-        nextPage = BitPayCardTopUpPage;
-        break;
-      case 'BuyAmazonPage':
-        nextPage = BuyAmazonPage;
-        break;
-      case 'BuyGlideraPage':
-        nextPage = BuyGlideraPage;
-        break;
-      case 'SellGlideraPage':
-        nextPage = SellGlideraPage;
-        break;
-      case 'BuyCoinbasePage':
-        nextPage = BuyCoinbasePage;
-        break;
-      case 'SellCoinbasePage':
-        nextPage = SellCoinbasePage;
-        break;
       case 'CustomAmountPage':
         nextPage = CustomAmountPage;
-        break;
-      case 'BuyMercadoLibrePage':
-        nextPage = BuyMercadoLibrePage;
-        break;
-      case 'ShapeshiftConfirmPage':
-        this.showSendMax = true;
-        nextPage = ShapeshiftConfirmPage;
         break;
       default:
         this.showSendMax = true;
@@ -315,12 +249,21 @@ export class AmountPage extends WalletTabsChild {
     );
     this.zone.run(() => {
       this.expression = this.availableUnits[this.unitIndex].isFiat
-        ? this.toFiat(maxAmount, this.wallet.coin).toFixed(2)
+        ? this.toFiat(maxAmount).toFixed(2)
         : maxAmount;
       this.processAmount();
       this.changeDetectorRef.detectChanges();
       this.finish();
     });
+  }
+
+  public shouldShowZeroState() {
+    return (
+      this.wallet &&
+      this.wallet.status &&
+      !this.wallet.status.totalBalanceSat &&
+      !this.requestingAmount
+    );
   }
 
   public isSendMaxButtonShown() {
@@ -422,24 +365,22 @@ export class AmountPage extends WalletTabsChild {
       );
   }
 
-  private fromFiat(val, coin?: string): number {
-    coin = coin || this.availableUnits[this.altUnitIndex].id;
+  private fromFiat(val): number {
     return parseFloat(
       (
-        this.rateProvider.fromFiat(val, this.fiatCode, coin) * this.satToUnit
+        this.rateProvider.fromFiat(val, this.fiatCode) * this.satToUnit
       ).toFixed(this.unitDecimals)
     );
   }
 
-  private toFiat(val: number, coin?: Coin): number {
+  private toFiat(val: number): number {
     if (!this.rateProvider.getRate(this.fiatCode)) return undefined;
 
     return parseFloat(
       this.rateProvider
         .toFiat(
           val * this.unitToSatoshi,
-          this.fiatCode,
-          coin || this.availableUnits[this.unitIndex].id
+          this.fiatCode
         )
         .toFixed(2)
     );
@@ -469,19 +410,13 @@ export class AmountPage extends WalletTabsChild {
   public finish(): void {
     let unit = this.availableUnits[this.unitIndex];
     let _amount = this.evaluate(this.format(this.expression));
-    let coin = unit.id;
     let data;
-
-    if (unit.isFiat) {
-      coin = this.availableUnits[this.altUnitIndex].id;
-    }
 
     if (this.navParams.data.nextPage) {
       data = {
         id: this._id,
         amount: this.useSendMax ? null : _amount,
         currency: unit.id.toUpperCase(),
-        coin,
         useSendMax: this.useSendMax,
         toWalletId: this.toWalletId
       };
@@ -497,7 +432,6 @@ export class AmountPage extends WalletTabsChild {
         name: this.name,
         email: this.email,
         color: this.color,
-        coin,
         useSendMax: this.useSendMax,
         description: this.description
       };
@@ -530,7 +464,7 @@ export class AmountPage extends WalletTabsChild {
     if (this.unitIndex >= this.availableUnits.length) this.unitIndex = 0;
 
     if (this.availableUnits[this.unitIndex].isFiat) {
-      // Always return to BTC... TODO?
+      // Always return to MANGA... TODO?
       this.altUnitIndex = 0;
     } else {
       this.altUnitIndex = _.findIndex(this.availableUnits, {
@@ -542,5 +476,19 @@ export class AmountPage extends WalletTabsChild {
       this.updateUnitUI();
       this.changeDetectorRef.detectChanges();
     });
+  }
+
+  public async goToReceive() {
+    await this.walletTabsProvider.goToTabIndex(0);
+
+    if (!(this.shouldShowZeroState() && this.wallet.needsBackup)) {
+      const walletType = 'mangacoin';
+      const infoSheet = this.actionSheetProvider.createInfoSheet(
+        'receiving-mangacoin',
+        { walletType }
+      );
+      await Observable.timer(250).toPromise();
+      infoSheet.present();
+    }
   }
 }

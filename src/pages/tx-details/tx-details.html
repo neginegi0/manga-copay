@@ -32,7 +32,6 @@
               <img class="sending-img" src="assets/img/tx-action/icon-confirming.svg">
             </span>
           </div>
-          <div class="alternative">{{btx.alternativeAmountStr}}</div>
         </div>
       </div>
     </ion-item>
@@ -40,7 +39,7 @@
     <label-tip class="low-fees" type="warn" *ngIf="btx.lowAmount">
       <span label-tip-title translate>Amount Too Low To Spend</span>
       <div label-tip-body translate>
-        This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network fee cost comparable to the funds itself.
+        This transaction amount is too small compared to current Mangacoin network fees. Spending these funds will need a Mangacoin network fee cost comparable to the funds itself.
         <br>
         <a class="label-tip-link" (click)="readMore()" translate>Learn More</a>
       </div>
@@ -53,7 +52,6 @@
       <ion-note>
         <span class="fee-amount">{{btx.feeStr}}</span>
         <div class="fee-details">
-          {{btx.feeFiatStr}} &middot;
           <span *ngIf="btx.feeRateStr" translate>{{btx.feeRateStr}} of the total amount</span>
         </div>
       </ion-note>
@@ -70,8 +68,8 @@
       <span translate>To</span>
       <div class="payment-to address-coppied">
         <div class="text-address ellipsis">
-          <img *ngIf="!cardId" src="assets/img/icon-bitcoin-small.svg" width="12">
-          <img *ngIf="cardId" src="assets/img/icon-card.svg" width="12" class="icon-bitcoin">
+          <img *ngIf="!cardId" src="assets/img/icon-mangacoin-small.svg" width="12">
+          <img *ngIf="cardId" src="assets/img/icon-card.svg" width="12" class="icon-mangacoin">
           <span class="address-divider"></span>
         </div>
         <div class="ellipsis" copy-to-clipboard="{{ btx.addressTo ? btx.addressTo : btx.outputs[0].address }}">

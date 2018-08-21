@@ -14,20 +14,14 @@ import {
 import { Observable, Subscription } from 'rxjs';
 
 // providers
-import { AmazonProvider } from '../providers/amazon/amazon';
 import { AppProvider } from '../providers/app/app';
-import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
-import { CoinbaseProvider } from '../providers/coinbase/coinbase';
 import { ConfigProvider } from '../providers/config/config';
 import { EmailNotificationsProvider } from '../providers/email-notifications/email-notifications';
-import { GlideraProvider } from '../providers/glidera/glidera';
 import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 import { Logger } from '../providers/logger/logger';
-import { MercadoLibreProvider } from '../providers/mercado-libre/mercado-libre';
 import { PopupProvider } from '../providers/popup/popup';
 import { ProfileProvider } from '../providers/profile/profile';
 import { PushNotificationsProvider } from '../providers/push-notifications/push-notifications';
-import { ShapeshiftProvider } from '../providers/shapeshift/shapeshift';
 import { TouchIdProvider } from '../providers/touchid/touchid';
 
 // pages
@@ -35,9 +29,6 @@ import { CopayersPage } from '../pages/add/copayers/copayers';
 import { ImportWalletPage } from '../pages/add/import-wallet/import-wallet';
 import { JoinWalletPage } from '../pages/add/join-wallet/join-wallet';
 import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
-import { BitPayCardIntroPage } from '../pages/integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
-import { CoinbasePage } from '../pages/integrations/coinbase/coinbase';
-import { GlideraPage } from '../pages/integrations/glidera/glidera';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
 import { OnboardingPage } from '../pages/onboarding/onboarding';
 import { PaperWalletPage } from '../pages/paper-wallet/paper-wallet';
@@ -78,11 +69,8 @@ export class CopayApp {
   private pageMap = {
     AddressbookAddPage,
     AmountPage,
-    BitPayCardIntroPage,
-    CoinbasePage,
     ConfirmPage,
     CopayersPage,
-    GlideraPage,
     ImportWalletPage,
     JoinWalletPage,
     PaperWalletPage,
@@ -100,12 +88,6 @@ export class CopayApp {
     private profile: ProfileProvider,
     private configProvider: ConfigProvider,
     private modalCtrl: ModalController,
-    private glideraProvider: GlideraProvider,
-    private coinbaseProvider: CoinbaseProvider,
-    private amazonProvider: AmazonProvider,
-    private bitPayCardProvider: BitPayCardProvider,
-    private mercadoLibreProvider: MercadoLibreProvider,
-    private shapeshiftProvider: ShapeshiftProvider,
     private emailNotificationsProvider: EmailNotificationsProvider,
     private screenOrientation: ScreenOrientation,
     private popupProvider: PopupProvider,
@@ -196,7 +178,6 @@ export class CopayApp {
       this.openLockModal();
     }
 
-    this.registerIntegrations();
     this.incomingDataRedirEvent();
     this.scanFromWalletEvent();
     this.events.subscribe('OpenWallet', wallet => this.openWallet(wallet));
@@ -274,36 +255,6 @@ export class CopayApp {
     modal.onDidDismiss(() => {
       this.isLockModalOpen = false;
     });
-  }
-
-  private registerIntegrations(): void {
-    // Mercado Libre
-    if (this.appProvider.info._enabledExtensions.mercadolibre)
-      this.mercadoLibreProvider.register();
-
-    // Amazon Gift Cards
-    if (this.appProvider.info._enabledExtensions.amazon)
-      this.amazonProvider.register();
-
-    // ShapeShift
-    if (this.appProvider.info._enabledExtensions.shapeshift)
-      this.shapeshiftProvider.register();
-
-    // Glidera
-    if (this.appProvider.info._enabledExtensions.glidera) {
-      this.glideraProvider.setCredentials();
-      this.glideraProvider.register();
-    }
-
-    // Coinbase
-    if (this.appProvider.info._enabledExtensions.coinbase) {
-      this.coinbaseProvider.setCredentials();
-      this.coinbaseProvider.register();
-    }
-
-    // BitPay Card
-    if (this.appProvider.info._enabledExtensions.debitcard)
-      this.bitPayCardProvider.register();
   }
 
   private incomingDataRedirEvent(): void {
@@ -412,12 +363,9 @@ export class CopayApp {
   }
 
   private onOpenNW(pathData) {
-    if (pathData.indexOf('bitcoincash:/') != -1) {
-      this.logger.debug('Bitcoin Cash URL found');
-      this.handleOpenUrl(pathData.substring(pathData.indexOf('bitcoincash:/')));
-    } else if (pathData.indexOf('bitcoin:/') != -1) {
-      this.logger.debug('Bitcoin URL found');
-      this.handleOpenUrl(pathData.substring(pathData.indexOf('bitcoin:/')));
+    if (pathData.indexOf('mangacoin:/') != -1) {
+      this.logger.debug('Mangacoin URL found');
+      this.handleOpenUrl(pathData.substring(pathData.indexOf('mangacoin:/')));
     } else if (pathData.indexOf(this.appProvider.info.name + '://') != -1) {
       this.logger.debug(this.appProvider.info.name + ' URL found');
       this.handleOpenUrl(

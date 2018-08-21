@@ -1,6 +1,6 @@
 [
-  { "code": "BTC", "name": "Bitcoin", "rate": 10 },
-  { "code": "BCH", "name": "Bitcoin Cash", "rate": 1 },
+  { "code": "MANGA", "name": "Mangacoin", "rate": 10 },
+  { "code": "BCH", "name": "Mangacoin Cash", "rate": 1 },
   { "code": "USD", "name": "US Dollar", "rate": 100000 },
   { "code": "EUR", "name": "Eurozone Euro", "rate": 548.519244 },
   { "code": "GBP", "name": "Pound Sterling", "rate": 481.732472 },

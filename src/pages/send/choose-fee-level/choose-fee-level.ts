@@ -28,7 +28,6 @@ export class ChooseFeeLevelPage {
   public feeOpts;
   public loadingFee: boolean;
   public feeLevels;
-  public coin: string;
   public avgConfirmationTime: number;
   public customSatPerByte: number;
   public maxFee: number;
@@ -70,7 +69,7 @@ export class ChooseFeeLevelPage {
     this.feeOpts = Object.keys(this.feeProvider.getFeeOpts());
     this.loadingFee = true;
     this.feeProvider
-      .getFeeLevels(this.coin)
+      .getFeeLevels()
       .then(levels => {
         this.loadingFee = false;
         if (_.isEmpty(levels)) {

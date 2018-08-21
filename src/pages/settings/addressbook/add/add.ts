@@ -62,7 +62,7 @@ export class AddressbookAddPage {
       );
     }
     this.events.subscribe('update:address', data => {
-      let address = data.value.replace(/^bitcoin(cash)?:/, '');
+      let address = data.value.replace(/^mangacoin(cash)?:/, '');
       this.addressBookAdd.controls['address'].setValue(address);
     });
   }

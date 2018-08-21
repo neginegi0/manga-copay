@@ -19,11 +19,6 @@ import { RateProvider } from '../rate/rate';
 import { TouchIdProvider } from '../touchid/touchid';
 import { TxFormatProvider } from '../tx-format/tx-format';
 
-export enum Coin {
-  BTC = 'btc',
-  BCH = 'bch'
-}
-
 export interface WalletOptions {
   name: any;
   m: any;
@@ -32,7 +27,6 @@ export interface WalletOptions {
   networkName: string;
   bwsurl: any;
   singleAddress: any;
-  coin: Coin;
   extendedPrivateKey: any;
   mnemonic: any;
   derivationStrategy: any;
@@ -149,9 +143,7 @@ export class WalletProvider {
 
         lodash.each(txps, tx => {
           tx = this.txFormatProvider.processTx(
-            wallet.coin,
-            tx,
-            this.useLegacyAddress()
+            tx
           );
 
           // no future transactions...
@@ -241,23 +233,18 @@ export class WalletProvider {
 
         // STR
         cache.totalBalanceStr = this.txFormatProvider.formatAmountStr(
-          wallet.coin,
           cache.totalBalanceSat
         );
         cache.lockedBalanceStr = this.txFormatProvider.formatAmountStr(
-          wallet.coin,
           cache.lockedBalanceSat
         );
         cache.availableBalanceStr = this.txFormatProvider.formatAmountStr(
-          wallet.coin,
           cache.availableBalanceSat
         );
         cache.spendableBalanceStr = this.txFormatProvider.formatAmountStr(
-          wallet.coin,
           cache.spendableAmount
         );
         cache.pendingBalanceStr = this.txFormatProvider.formatAmountStr(
-          wallet.coin,
           cache.pendingAmount
         );
 
@@ -284,32 +271,27 @@ export class WalletProvider {
           });
 
         this.rateProvider
-          .whenRatesAvailable(wallet.coin)
+          .whenRatesAvailable()
           .then(() => {
             let totalBalanceAlternative = this.rateProvider.toFiat(
               cache.totalBalanceSat,
-              cache.alternativeIsoCode,
-              wallet.coin
+              cache.alternativeIsoCode
             );
             let pendingBalanceAlternative = this.rateProvider.toFiat(
               cache.pendingAmount,
-              cache.alternativeIsoCode,
-              wallet.coin
+              cache.alternativeIsoCode
             );
             let lockedBalanceAlternative = this.rateProvider.toFiat(
               cache.lockedBalanceSat,
-              cache.alternativeIsoCode,
-              wallet.coin
+              cache.alternativeIsoCode
             );
             let spendableBalanceAlternative = this.rateProvider.toFiat(
               cache.spendableAmount,
-              cache.alternativeIsoCode,
-              wallet.coin
+              cache.alternativeIsoCode
             );
             let alternativeConversionRate = this.rateProvider.toFiat(
               100000000,
-              cache.alternativeIsoCode,
-              wallet.coin
+              cache.alternativeIsoCode
             );
 
             cache.totalBalanceAlternative = this.filter.formatFiatAmount(
@@ -437,27 +419,15 @@ export class WalletProvider {
     });
   }
 
-  public useLegacyAddress(): boolean {
-    let config = this.configProvider.get();
-    let walletSettings = config.wallet;
-
-    return walletSettings.useLegacyAddress;
+  public getAddressView(address: string): string {
+    return address;
   }
 
-  public getAddressView(wallet, address: string): string {
-    if (wallet.coin != 'bch' || this.useLegacyAddress()) return address;
-    return this.txFormatProvider.toCashAddress(address);
-  }
-
-  public getProtoAddress(wallet, address: string) {
-    let proto: string = this.getProtocolHandler(wallet.coin, wallet.network);
+  public getProtoAddress(address: string) {
+    let proto: string = this.getProtocolHandler();
     let protoAddr: string = proto + ':' + address;
 
-    if (wallet.coin != 'bch' || this.useLegacyAddress()) {
-      return protoAddr;
-    } else {
-      return protoAddr.toUpperCase();
-    }
+    return protoAddr;
   }
 
   public getAddress(wallet, forceNew: boolean): Promise<string> {
@@ -606,26 +576,6 @@ export class WalletProvider {
       this.progressFn[walletId] = opts.progressFn || (() => {});
       let foundLimitTx = [];
 
-      let fixTxsUnit = (txs): void => {
-        if (!txs || !txs[0] || !txs[0].amountStr) return;
-
-        let cacheCoin: string = txs[0].amountStr.split(' ')[1];
-
-        if (cacheCoin == 'bits') {
-          this.logger.debug('Fixing Tx Cache Unit to: ' + wallet.coin);
-          lodash.each(txs, tx => {
-            tx.amountStr = this.txFormatProvider.formatAmountStr(
-              wallet.coin,
-              tx.amount
-            );
-            tx.feeStr = this.txFormatProvider.formatAmountStr(
-              wallet.coin,
-              tx.fees
-            );
-          });
-        }
-      };
-
       /* TODO: update on progress
       if (updateOnProgress[wallet.id]) {
         $log.warn('History update already on progress for: '+ wallet.credentials.walletName);
@@ -643,7 +593,6 @@ export class WalletProvider {
 
       this.getSavedTxs(walletId)
         .then(txsFromLocal => {
-          fixTxsUnit(txsFromLocal);
 
           let confirmedTxs = this.removeAndMarkSoftConfirmedTx(txsFromLocal);
           let endingTxid = confirmedTxs[0] ? confirmedTxs[0].txid : null;
@@ -833,9 +782,7 @@ export class WalletProvider {
 
     lodash.each(txs, tx => {
       tx = this.txFormatProvider.processTx(
-        wallet.coin,
-        tx,
-        this.useLegacyAddress()
+        tx
       );
 
       // no future transactions...
@@ -889,7 +836,7 @@ export class WalletProvider {
   public getMinFee(wallet, nbOutputs?: number): Promise<any> {
     return new Promise((resolve, reject) => {
       this.feeProvider
-        .getFeeLevels(wallet.coin)
+        .getFeeLevels()
         .then(data => {
           let normalLevelRate = lodash.find(
             data.levels[wallet.network],
@@ -910,7 +857,7 @@ export class WalletProvider {
   }
 
   // These 2 functions were taken from
-  // https://github.com/bitpay/bitcore-wallet-service/blob/master/lib/model/txproposal.js#L243
+  // https://github.com/bitpay/mangacore-wallet-service/blob/master/lib/model/txproposal.js#L243
   private getEstimatedSizeForSingleInput(wallet): number {
     switch (wallet.credentials.addressType) {
       case 'P2PKH':
@@ -1189,8 +1136,8 @@ export class WalletProvider {
       // Get current languge
       prefs.language = this.languageProvider.getCurrent();
 
-      // Set OLD wallet in bits to btc
-      prefs.unit = 'btc'; // DEPRECATED
+      // Set OLD wallet in bits to MANGA 
+      prefs.unit = 'MANGA'; // DEPRECATED
 
       updateRemotePreferencesFor(lodash.clone(clients), prefs)
         .then(() => {
@@ -1286,9 +1233,7 @@ export class WalletProvider {
   public getLowUtxos(wallet): Promise<any> {
     return new Promise((resolve, reject) => {
       wallet.getUtxos(
-        {
-          coin: wallet.coin
-        },
+        {},
         (err, resp) => {
           if (err || !resp || !resp.length) return reject(err);
 
@@ -1574,9 +1519,7 @@ export class WalletProvider {
           '|' +
           derivationPath +
           '|' +
-          wallet.credentials.mnemonicHasPassphrase +
-          '|' +
-          wallet.coin
+          wallet.credentials.mnemonicHasPassphrase
       );
     });
   }
@@ -1639,18 +1582,14 @@ export class WalletProvider {
     });
   }
 
-  public getProtocolHandler(coin: string, network?: string): string {
-    if (coin == 'bch') {
-      return network == 'testnet' ? 'bchtest' : 'bitcoincash';
-    } else {
-      return 'bitcoin';
-    }
+  public getProtocolHandler(): string {
+      return 'mangacoin';
   }
 
   public copyCopayers(wallet, newWallet): Promise<any> {
     return new Promise((resolve, reject) => {
       let walletPrivKey = this.bwcProvider
-        .getBitcore()
+        .getMangacore()
         .PrivateKey.fromString(wallet.credentials.walletPrivKey);
       let copayer = 1;
       let i = 0;
@@ -1663,9 +1602,7 @@ export class WalletProvider {
           item.xPubKey,
           item.requestPubKey,
           name,
-          {
-            coin: newWallet.credentials.coin
-          },
+          {},
           err => {
             // Ignore error is copayer already in wallet
             if (err && !(err instanceof this.errors.COPAYER_IN_WALLET))

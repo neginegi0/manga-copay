@@ -7,7 +7,7 @@
   </div>
   <ion-note *ngIf="payProDetailsData" item-right>
     <div class="amount">
-      {{payProDetailsData?.amount | satToUnit: payProDetailsData?.coin}}
+      {{payProDetailsData?.amount}} MANGA
     </div>
     <span class="date">{{ remainingTimeStr }}</span>
   </ion-note>
@@ -15,7 +15,7 @@
   <div *ngIf="!payProDetailsData" class='loader loader-subtitle gradient'></div>
 </button>
 <button ion-item detail-none class="clipboard" *ngIf="validDataFromClipboard.type !== 'PayPro'">
-  <img *ngIf="validDataFromClipboard.type === 'BitcoinUri' || validDataFromClipboard.type === 'BitcoinCashUri' || validDataFromClipboard.type === 'BitcoinAddress' || validDataFromClipboard.type === 'BitcoinCashAddress'"
-    src="assets/img/icon-bitcoin-small.svg" />
+  <img *ngIf="validDataFromClipboard.type === 'MangacoinUri' || validDataFromClipboard.type === 'MangacoinAddress'"
+    src="assets/img/icon-mangacoin-small.svg" />
   <div class="ellipsis">{{validDataFromClipboard.data}}</div>
 </button>

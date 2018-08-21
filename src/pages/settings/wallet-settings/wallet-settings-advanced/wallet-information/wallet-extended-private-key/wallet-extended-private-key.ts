@@ -44,10 +44,8 @@ export class WalletExtendedPrivateKeyPage {
         this.credentialsEncrypted = false;
       })
       .catch(err => {
-        if (err && err.message != 'FINGERPRINT_CANCELLED') {
-          let title = this.translate.instant('Could not decrypt wallet');
-          this.showErrorInfoSheet(err, title);
-        }
+        let title = this.translate.instant('Could not decrypt wallet');
+        this.showErrorInfoSheet(err, title);
         this.navCtrl.pop();
       });
   }

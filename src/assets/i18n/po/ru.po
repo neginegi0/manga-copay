@@ -32,20 +32,20 @@ msgstr "=896t7!"
 msgid "A member of the team will review your feedback as soon as possible."
 msgstr "Участник команды рассмотрит ваш отзыв при первой возможности."
 
-msgid "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
-msgstr "В общей сложности {{amountAboveMaxSizeStr}} {{coin}} было исключено. Превышен максимальный размер транзакции."
+msgid "A total of {{amountAboveMaxSizeStr}} MANGA were excluded. The maximum size allowed for a transaction was exceeded."
+msgstr "В общей сложности {{amountAboveMaxSizeStr}} MANGA было исключено. Превышен максимальный размер транзакции."
 
-msgid "A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
-msgstr "В общей сложности {{amountBelowFeeStr}} {{coin}} было исключено. Эти средства поступают от UTXOs которые меньше чем плата за сеть."
+msgid "A total of {{amountBelowFeeStr}} MANGA were excluded. These funds come from UTXOs smaller than the network fee provided."
+msgstr "В общей сложности {{amountBelowFeeStr}} MANGA было исключено. Эти средства поступают от UTXOs которые меньше чем плата за сеть."
 
 msgid "A total of {{amountStr}} ({{fiatAmount | currency}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal | currency}} {{currencyIsoCode}}). Would you like to proceed?"
 msgstr "Всего будет произведен обмен {{amountStr}} ({{fiatAmount | currency}} {{currencyIsoCode}}) на {{withdrawalStr}} ({{fiatWithdrawal | currency}} {{currencyIsoCode}}). Хотите продолжить?"
 
-msgid "A total of {{fee}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
-msgstr "В общей сложности {{fee}} {{coin}} было исключено. Превышен максимальный размер транзакции."
+msgid "A total of {{fee}} MANGA were excluded. The maximum size allowed for a transaction was exceeded."
+msgstr "В общей сложности {{fee}} MANGA было исключено. Превышен максимальный размер транзакции."
 
-msgid "A total of {{fee}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
-msgstr "В общей сложности {{fee}} {{coin}} было исключено. Эти средства поступают от UTXOs которые меньше, чем предусмотренная плата за сеть."
+msgid "A total of {{fee}} MANGA were excluded. These funds come from UTXOs smaller than the network fee provided."
+msgstr "В общей сложности {{fee}} MANGA было исключено. Эти средства поступают от UTXOs которые меньше, чем предусмотренная плата за сеть."
 
 msgid "About"
 msgstr "О проекте"
@@ -2433,7 +2433,7 @@ msgstr ""
 msgid "{{btx.feeRateStr}} of the total amount"
 msgstr ""
 
-msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
+msgid "{{fee}} MANGA will be deducted for bitcoin networking fees."
 msgstr ""
 
 msgid "{{tx.feeRateStr}} of the total amount"

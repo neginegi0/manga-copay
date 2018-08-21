@@ -52,7 +52,7 @@ export class WalletTransactionHistoryPage {
 
   ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
-    this.currency = this.wallet.coin.toUpperCase();
+    this.currency = 'MANGA';
     this.isCordova = this.platformProvider.isCordova;
     this.appName = this.appProvider.info.nameCase;
     this.config = this.configProvider.get();
@@ -148,7 +148,7 @@ export class WalletTransactionHistoryPage {
             var _fee = (it.fees * this.satToBtc).toFixed(8);
             this.csvContent.push({
               Date: this.formatDate(it.time * 1000),
-              Destination: 'Bitcoin Network Fees',
+              Destination: 'Mangacoin Network Fees',
               Description: '',
               Amount: '-' + _fee,
               Currency: this.currency,

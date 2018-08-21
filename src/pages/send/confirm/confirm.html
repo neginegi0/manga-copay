@@ -3,7 +3,7 @@
     <ion-title>{{ 'Confirm' | translate }}</ion-title>
     <ion-buttons right *ngIf="isWithinWalletTabs()">
       <button (click)="close()" ion-button>
-        {{'Cancel' | translate}}
+        Cancel
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -21,26 +21,26 @@
           <div class="amount">
             <div>
               {{amount}}
-              <span class="amount-coin">{{tx.coin | uppercase}}</span>
+              <span class="amount-coin">MANGA</span>
             </div>
             <img class="sending-img" src="assets/img/icon-tx-sent-outline.svg">
           </div>
-          <div class="alternative">{{tx.amount | satToFiat: tx.coin}}</div>
+          <div class="alternative">{{tx.amount}} MANGA</div>
         </div>
       </div>
     </ion-item>
     <button ion-item class="item-fee" (click)="chooseFeeLevel()" [ngClass]="{'warn': wallet && tx.txp[wallet.id] && tx.txp[wallet.id].feeTooHigh}">
       <div class="fee-title">
-        <span translate>Bitcoin miner fee:</span>
+        <span translate>Mangacoin miner fee:</span>
       </div>
       <div class="fee-loading" *ngIf="!wallet || !tx.txp[wallet.id]">
         <div>...</div>
         <div>...</div>
       </div>
       <div *ngIf="wallet && tx.txp[wallet.id]">
-        <span class="fee-amount">{{tx.txp[wallet.id].fee | satToUnit: tx.coin}}</span>
+        <span class="fee-amount">{{tx.txp[wallet.id].fee}} MANGA</span>
         <div class="fee-details">
-          {{tx.txp[wallet.id].fee | satToFiat: tx.coin}}
+          {{tx.txp[wallet.id].fee}} MANGA
           <span *ngIf="tx.txp[wallet.id].feeRatePerStr">
             &middot;
             <span>
@@ -67,7 +67,7 @@
 
       <div class="payment-proposal-to address-coppied" *ngIf="!tx.recipientType">
         <div class="text-address ellipsis">
-          <img src="assets/img/icon-bitcoin-small.svg" alt="BTC" width="12" />
+          <img src="assets/img/icon-mangacoin-small.svg" alt="MANGA" width="12" />
           <span class="address-divider"></span>
         </div>
         <div class="ellipsis" *ngIf="!tx.paypro" copy-to-clipboard="{{ tx.origToAddress }}">

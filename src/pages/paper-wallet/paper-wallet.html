@@ -12,7 +12,7 @@
     <h4 class="title">
       <span translate>Funds found</span>:
       <span *ngFor="let b of balances">
-        {{b.balance | satToUnit: b.coin}}
+        {{b.balance}} MANGA
       </span>
       <span *ngIf="balances.length == 0">...</span>
     </h4>

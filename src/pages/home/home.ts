@@ -12,13 +12,6 @@ import { Subscription } from 'rxjs';
 
 // Pages
 import { AddPage } from '../add/add';
-import { AmazonPage } from '../integrations/amazon/amazon';
-import { BitPayCardPage } from '../integrations/bitpay-card/bitpay-card';
-import { BitPayCardIntroPage } from '../integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
-import { CoinbasePage } from '../integrations/coinbase/coinbase';
-import { GlideraPage } from '../integrations/glidera/glidera';
-import { MercadoLibrePage } from '../integrations/mercado-libre/mercado-libre';
-import { ShapeshiftPage } from '../integrations/shapeshift/shapeshift';
 import { PaperWalletPage } from '../paper-wallet/paper-wallet';
 import { AmountPage } from '../send/amount/amount';
 import { AddressbookAddPage } from '../settings/addressbook/add/add';
@@ -29,17 +22,13 @@ import { ProposalsPage } from './proposals/proposals';
 
 // Providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
-import { AddressProvider } from '../../providers/address/address';
-import { AmazonProvider } from '../../providers/amazon/amazon';
 import { AppProvider } from '../../providers/app/app';
-import { BitPayCardProvider } from '../../providers/bitpay-card/bitpay-card';
 import { BwcErrorProvider } from '../../providers/bwc-error/bwc-error';
 import { ClipboardProvider } from '../../providers/clipboard/clipboard';
 import { ConfigProvider } from '../../providers/config/config';
 import { EmailNotificationsProvider } from '../../providers/email-notifications/email-notifications';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { FeedbackProvider } from '../../providers/feedback/feedback';
-import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 import { IncomingDataProvider } from '../../providers/incoming-data/incoming-data';
 import { Logger } from '../../providers/logger/logger';
 import { OnGoingProcessProvider } from '../../providers/on-going-process/on-going-process';
@@ -72,9 +61,6 @@ export class HomePage {
   public addressbook;
   public newRelease: boolean;
   public updateText: string;
-  public homeIntegrations;
-  public bitpayCardItems;
-  public showBitPayCard: boolean = false;
   public showAnnouncement: boolean = false;
   public validDataFromClipboard;
   public payProDetailsData;
@@ -110,17 +96,13 @@ export class HomePage {
     private addressBookProvider: AddressBookProvider,
     private appProvider: AppProvider,
     private platformProvider: PlatformProvider,
-    private homeIntegrationsProvider: HomeIntegrationsProvider,
     private persistenceProvider: PersistenceProvider,
     private feedbackProvider: FeedbackProvider,
-    private bitPayCardProvider: BitPayCardProvider,
     private translate: TranslateService,
     private emailProvider: EmailNotificationsProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
-    private amazonProvider: AmazonProvider,
     private clipboardProvider: ClipboardProvider,
-    private incomingDataProvider: IncomingDataProvider,
-    private addressProvider: AddressProvider
+    private incomingDataProvider: IncomingDataProvider
   ) {
     this.updatingWalletId = {};
     this.addressbook = {};
@@ -180,29 +162,6 @@ export class HomePage {
 
     this.subscribeIncomingDataMenuEvent();
     this.subscribeBwsEvents();
-
-    // Show integrations
-    let integrations = _.filter(this.homeIntegrationsProvider.get(), {
-      show: true
-    });
-
-    // Hide BitPay if linked
-    setTimeout(() => {
-      this.homeIntegrations = _.remove(_.clone(integrations), x => {
-        if (x.name == 'debitcard' && x.linked) return;
-        else return x;
-      });
-    }, 200);
-
-    // Only BitPay Wallet
-    this.bitPayCardProvider.get({}, (_, cards) => {
-      this.zone.run(() => {
-        this.showBitPayCard = this.appProvider.info._enabledExtensions.debitcard
-          ? true
-          : false;
-        this.bitpayCardItems = cards;
-      });
-    });
   }
 
   ionViewDidLoad() {
@@ -261,7 +220,7 @@ export class HomePage {
     this.events.subscribe('finishIncomingDataMenuEvent', data => {
       switch (data.redirTo) {
         case 'AmountPage':
-          this.sendPaymentToAddress(data.value, data.coin);
+          this.sendPaymentToAddress(data.value);
           break;
         case 'AddressBookPage':
           this.addToAddressBook(data.value);
@@ -280,12 +239,12 @@ export class HomePage {
     this.externalLinkProvider.open(url);
   }
 
-  private sendPaymentToAddress(bitcoinAddress: string, coin: string): void {
-    this.navCtrl.push(AmountPage, { toAddress: bitcoinAddress, coin });
+  private sendPaymentToAddress(mangacoinAddress: string): void {
+    this.navCtrl.push(AmountPage, { toAddress: mangacoinAddress });
   }
 
-  private addToAddressBook(bitcoinAddress: string): void {
-    this.navCtrl.push(AddressbookAddPage, { addressbookEntry: bitcoinAddress });
+  private addToAddressBook(mangacoinAddress: string): void {
+    this.navCtrl.push(AddressbookAddPage, { addressbookEntry: mangacoinAddress });
   }
 
   private scanPaperWallet(privateKey: string) {
@@ -339,12 +298,7 @@ export class HomePage {
   private setWallets = _.debounce(
     () => {
       this.wallets = this.profileProvider.getWallets();
-      this.walletsBtc = _.filter(this.wallets, (x: any) => {
-        return x.credentials.coin == 'btc';
-      });
-      this.walletsBch = _.filter(this.wallets, (x: any) => {
-        return x.credentials.coin == 'bch';
-      });
+      this.walletsBtc = this.wallets;
       this.updateAllWallets();
     },
     5000,
@@ -365,22 +319,14 @@ export class HomePage {
   }
 
   private async checkAnnouncement() {
-    if (!this.amazonProvider.currency)
-      await this.amazonProvider.setCurrencyByLocation();
-    if (this.amazonProvider.currency == 'JPY') {
-      this.persistenceProvider.getShowAmazonJapanAnnouncement().then(value => {
-        if (!value) this.showAnnouncement = true;
-      });
-    }
+
   }
 
   public hideAnnouncement(): void {
-    this.persistenceProvider.setShowAmazonJapanAnnouncement('hide');
     this.showAnnouncement = false;
   }
 
   public openAnnouncement(): void {
-    this.navCtrl.push(AmazonPage);
   }
 
   private checkFeedbackInfo() {
@@ -416,7 +362,7 @@ export class HomePage {
         if (!this.validDataFromClipboard) {
           return;
         }
-        const dataToIgnore = ['BitcoinAddress', 'BitcoinCashAddress'];
+        const dataToIgnore = ['MangacoinAddress'];
         if (dataToIgnore.indexOf(this.validDataFromClipboard.type) > -1) {
           this.validDataFromClipboard = null;
           return;
@@ -426,10 +372,6 @@ export class HomePage {
             .getPayProDetails(data)
             .then(payProDetails => {
               this.payProDetailsData = payProDetails;
-              this.payProDetailsData.coin = this.addressProvider.getCoin(
-                this.payProDetailsData.toAddress
-              );
-              this.clearCountDownInterval();
               this.paymentTimeControl(this.payProDetailsData.expires);
             })
             .catch(err => {
@@ -448,12 +390,7 @@ export class HomePage {
     this.validDataFromClipboard = null;
     this.payProDetailsData = null;
     this.clipboardProvider.clear();
-    this.clearCountDownInterval();
-    this.incomingDataProvider.redir(data, { fromHomeCard: true });
-  }
-
-  private clearCountDownInterval(): void {
-    if (this.countDown) clearInterval(this.countDown);
+    this.incomingDataProvider.redir(data);
   }
 
   private paymentTimeControl(expirationTime): void {
@@ -461,7 +398,7 @@ export class HomePage {
       let now = Math.floor(Date.now() / 1000);
       if (now > expirationTime) {
         this.remainingTimeStr = this.translate.instant('Expired');
-        this.clearCountDownInterval();
+        if (this.countDown) clearInterval(this.countDown);
         return;
       }
       let totalSecs = expirationTime - now;
@@ -733,19 +670,9 @@ export class HomePage {
 
   public goTo(page: string): void {
     const pageMap = {
-      AmazonPage,
-      BitPayCardIntroPage,
-      CoinbasePage,
-      GlideraPage,
-      MercadoLibrePage,
-      ShapeshiftPage
     };
 
     this.navCtrl.push(pageMap[page]);
-  }
-
-  public goToCard(cardId): void {
-    this.navCtrl.push(BitPayCardPage, { id: cardId });
   }
 
   public doRefresh(refresher) {

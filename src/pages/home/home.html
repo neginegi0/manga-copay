@@ -86,7 +86,7 @@
           <img src="assets/img/check-white.svg" class="bg green" />
         </ion-icon>
         <div class="title" translate>
-          Your bitcoin wallet is ready!
+          Your mangacoin wallet is ready!
         </div>
         <div class="subtitle" translate>
           On this screen you can see all your wallets, accounts, and assets.
@@ -142,8 +142,8 @@
     <div class="card" *ngIf="walletsBtc && walletsBtc[0]">
       <ion-item-divider>
         <div class="title" item-start>
-          <img src="assets/img/icon-bitcoin.svg" alt="Bitcoin Wallets" width="18" />
-          <span translate>Bitcoin Wallets</span>
+          <img src="assets/img/icon-mangacoin.svg" alt="Mangacoin Wallets" width="18" />
+          <span translate>Mangacoin Wallets</span>
         </div>
         <div item-end *ngIf="!showReorderBtc">
           <button ion-button clear icon-only color="grey" (click)="goToAddView()">
@@ -198,8 +198,8 @@
     <div class="card" *ngIf="walletsBch && walletsBch[0]">
       <ion-item-divider>
         <div class="title" item-start>
-          <img src="assets/img/bitcoin-cash-logo.svg" alt="Bitcoin Cash Wallets" width="22" />
-          <span translate>Bitcoin Cash Wallets</span>
+          <img src="assets/img/mangacoin-cash-logo.svg" alt="Mangacoin Cash Wallets" width="22" />
+          <span translate>Mangacoin Cash Wallets</span>
         </div>
         <div item-end *ngIf="!showReorderBch">
           <button ion-button clear icon-only color="grey" (click)="goToAddView()">
@@ -249,51 +249,6 @@
           </div>
         </button>
       </ion-list>
-    </div>
-
-    <div class="card" *ngIf="showBitPayCard && bitpayCardItems && bitpayCardItems[0] && wallets &&wallets[0]">
-      <ion-item-divider>
-        <div class="title" item-start>
-          <span>BitPay Visa
-            <sup>&reg;</sup> Card</span>
-        </div>
-        <div item-end>
-          <button ion-button clear icon-only color="grey" (click)="goTo('BitPayCardIntroPage')">
-            <ion-icon name="add"></ion-icon>
-          </button>
-        </div>
-      </ion-item-divider>
-      <ion-list>
-        <button ion-item *ngFor="let card of bitpayCardItems" (click)="goToCard(card.id)">
-          <ion-icon class="item-img" item-start>
-            <img src="assets/img/icon-card.svg" class="icon-card" />
-          </ion-icon>
-          <div class="item-title">BitPay Visa&reg; Card ({{card.lastFourDigits}})</div>
-          <div class="item-subtitle">{{card.balance ? (card.balance | currency:card.currencySymbol:2) : 'Add funds to get started'|translate}} {{card.updatedOn
-            ? (' &middot; ' + (card.updatedOn * 1000 | amTimeAgo)) : ''}}</div>
-        </button>
-      </ion-list>
-    </div>
-
-    <div class="card" *ngIf="homeIntegrations && homeIntegrations.length>0 && wallets &&wallets[0]">
-      <ion-item-divider (click)="hideHomeIntegrations = !hideHomeIntegrations">
-        <div class="title" item-start translate>Services</div>
-        <div item-end>
-          <button ion-button clear color="grey" icon-only>
-            <ion-icon *ngIf="hideHomeIntegrations" name="arrow-dropdown"></ion-icon>
-            <ion-icon *ngIf="!hideHomeIntegrations" name="arrow-dropup"></ion-icon>
-          </button>
-        </div>
-      </ion-item-divider>
-      <ion-list *ngIf="!hideHomeIntegrations">
-        <button ion-item *ngFor="let service of homeIntegrations" (click)="goTo(service.page)">
-          <ion-icon class="item-img" item-start>
-            <img src="{{service.icon}}" class="icon-services" />
-          </ion-icon>
-          <span class="item-title">{{service.title || service.name}}</span>
-        </button>
-      </ion-list>
-
     </div>
   </div>
 

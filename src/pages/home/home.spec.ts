@@ -90,16 +90,16 @@ describe('HomePage', () => {
         incomingDataProvider = testBed.get(IncomingDataProvider);
         spyOn(clipboardProvider, 'getData').and.returnValue(Promise.resolve());
       });
-      it('should ignore BitcoinAddress', async () => {
+      it('should ignore MangacoinAddress', async () => {
         spyOn(incomingDataProvider, 'parseData').and.returnValue({
-          type: 'BitcoinAddress'
+          type: 'MangacoinAddress'
         });
         await instance.checkClipboard();
         expect(instance.validDataFromClipboard).toBeNull();
       });
-      it('should ignore BitcoinCashAddress', async () => {
+      it('should ignore MangacoinCashAddress', async () => {
         spyOn(incomingDataProvider, 'parseData').and.returnValue({
-          type: 'BitcoinCashAddress'
+          type: 'MangacoinCashAddress'
         });
         await instance.checkClipboard();
         expect(instance.validDataFromClipboard).toBeNull();

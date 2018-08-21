@@ -7,14 +7,14 @@
 <ion-content>
   <ion-item-divider text-center>
     <span translate>
-      Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment.
+      Each mangacoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment.
     </span>
     <a (click)="showInfo = !showInfo" *ngIf="!showInfo" translate>Why?</a>
 
     <div *ngIf="showInfo">
       <br>
       <span translate>
-        It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers.</span>
+        It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your mangacoins secure against hypothetical attacks by quantum computers.</span>
       <a (click)="showInfo = !showInfo" translate>Hide</a>
     </div>
   </ion-item-divider>
@@ -66,7 +66,7 @@
 
       <ion-item *ngFor="let w of latestWithBalance" copy-to-clipboard="{{w.address}}">
         <h3>{{w.address}}</h3>
-        <p class="info">{{w.amount | satToUnit: wallet.coin}}</p>
+        <p class="info">{{w.amount}} MANGA</p>
       </ion-item>
     </div>
 
@@ -84,7 +84,7 @@
       </ion-item>
 
       <ion-item>
-        <span translate>Approximate Bitcoin network fee to transfer wallet's balance (with normal priority)</span>
+        <span translate>Approximate Mangacoin network fee to transfer wallet's balance (with normal priority)</span>
         <p class="info">{{minFeePer}} [{{minFee}}]</p>
       </ion-item>
     </div>

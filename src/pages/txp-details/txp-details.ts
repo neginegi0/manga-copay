@@ -80,9 +80,7 @@ export class TxpDetailsPage {
       ? this.tx.wallet
       : this.profileProvider.getWallet(this.tx.walletId);
     this.tx = this.txFormatProvider.processTx(
-      this.wallet.coin,
-      this.tx,
-      this.walletProvider.useLegacyAddress()
+      this.tx
     );
     if (!this.tx.toAddress) this.tx.toAddress = this.tx.outputs[0].toAddress;
     this.isGlidera = this.navParams.data.isGlidera;
@@ -108,7 +106,7 @@ export class TxpDetailsPage {
     // for (let i = 0; i < 15; i++) {
 
     //   txp.outputs.push({
-    //     amountStr: "600 BTC",
+    //     amountStr: "600 MANGA",
     //     toAddress: '2N8bhEwbKtMvR2jqMRcTCQqzHP6zXGToXcK',
     //     message: 'output #' + (Number(i) + 1)
     //   });
@@ -160,7 +158,6 @@ export class TxpDetailsPage {
 
   private displayFeeValues(): void {
     this.tx.feeFiatStr = this.txFormatProvider.formatAlternativeStr(
-      this.wallet.coin,
       this.tx.fee
     );
     this.tx.feeRateStr =
@@ -359,7 +356,6 @@ export class TxpDetailsPage {
 
         this.logger.error(
           'Could not broadcast: ',
-          this.tx.coin,
           this.tx.network,
           this.tx.raw
         );
@@ -379,9 +375,7 @@ export class TxpDetailsPage {
         });
 
         this.tx = this.txFormatProvider.processTx(
-          this.wallet.coin,
-          tx,
-          this.walletProvider.useLegacyAddress()
+          tx
         );
 
         if (!action && tx.status == 'pending') this.tx.pendingForUs = true;

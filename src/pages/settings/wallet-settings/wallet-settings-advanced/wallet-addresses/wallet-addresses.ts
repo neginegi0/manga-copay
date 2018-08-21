@@ -125,15 +125,12 @@ export class WalletAddressesPage {
           this.lowUtxosNb = resp.lowUtxos.length;
           this.allUtxosNb = resp.allUtxos.length;
           this.lowUtxosSum = this.txFormatProvider.formatAmountStr(
-            this.wallet.coin,
             _.sumBy(resp.lowUtxos || 0, 'satoshis')
           );
           this.allUtxosSum = this.txFormatProvider.formatAmountStr(
-            this.wallet.coin,
             allSum
           );
           this.minFee = this.txFormatProvider.formatAmountStr(
-            this.wallet.coin,
             resp.minFee || 0
           );
           this.minFeePer = per.toFixed(2) + '%';
@@ -147,7 +144,7 @@ export class WalletAddressesPage {
   private processList(list): void {
     _.each(list, n => {
       n.path = n.path ? n.path.replace(/^m/g, 'xpub') : null;
-      n.address = this.walletProvider.getAddressView(this.wallet, n.address);
+      n.address = this.walletProvider.getAddressView(n.address);
     });
   }
 
@@ -203,7 +200,6 @@ export class WalletAddressesPage {
     let modal = this.modalCtrl.create(AllAddressesPage, {
       noBalance: this.noBalance,
       withBalance: this.withBalance,
-      coin: this.wallet.coin,
       walletName: this.wallet.name,
       walletColor: this.wallet.color
     });

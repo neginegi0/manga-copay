@@ -17,7 +17,6 @@ import { PlatformProvider } from '../../../../../../providers/platform/platform'
 export class AllAddressesPage {
   public noBalance;
   public withBalance;
-  public coin: string;
   public isCordova: boolean;
   public walletColor: string;
 
@@ -37,7 +36,6 @@ export class AllAddressesPage {
     this.walletColor = this.navParams.data.walletColor;
     this.noBalance = this.navParams.data.noBalance;
     this.withBalance = this.navParams.data.withBalance;
-    this.coin = this.navParams.data.coin;
     this.allAddresses = this.noBalance.concat(this.withBalance);
     this.isCordova = this.platformProvider.isCordova;
   }

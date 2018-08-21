@@ -18,7 +18,7 @@ import { ReplaceParametersProvider } from '../replace-parameters/replace-paramet
 
 // models
 import { Profile } from '../../models/profile/profile.model';
-import { Coin, WalletOptions } from '../wallet/wallet';
+import { WalletOptions } from '../wallet/wallet';
 
 @Injectable()
 export class ProfileProvider {
@@ -152,7 +152,6 @@ export class ProfileProvider {
     wallet.copayerId = wallet.credentials.copayerId;
     wallet.m = wallet.credentials.m;
     wallet.n = wallet.credentials.n;
-    wallet.coin = wallet.credentials.coin;
     wallet.status = {};
 
     this.updateWalletSettings(wallet);
@@ -628,8 +627,7 @@ export class ProfileProvider {
           passphrase: opts.passphrase,
           entropySourcePath: opts.entropySourcePath,
           derivationStrategy: opts.derivationStrategy || 'BIP44',
-          account: opts.account || 0,
-          coin: opts.coin
+          account: opts.account || 0
         },
         err => {
           if (err) {
@@ -669,8 +667,7 @@ export class ProfileProvider {
         opts.entropySource,
         {
           account: opts.account || 0,
-          derivationStrategy: opts.derivationStrategy || 'BIP44',
-          coin: opts.coin
+          derivationStrategy: opts.derivationStrategy || 'BIP44'
         },
         err => {
           if (err) {
@@ -883,8 +880,7 @@ export class ProfileProvider {
             network,
             passphrase: opts.passphrase,
             account: opts.account || 0,
-            derivationStrategy: opts.derivationStrategy || 'BIP44',
-            coin: opts.coin
+            derivationStrategy: opts.derivationStrategy || 'BIP44'
           });
         } catch (ex) {
           this.logger.info('Invalid wallet recovery phrase: ', ex);
@@ -899,8 +895,7 @@ export class ProfileProvider {
           walletClient.seedFromExtendedPrivateKey(opts.extendedPrivateKey, {
             network,
             account: opts.account || 0,
-            derivationStrategy: opts.derivationStrategy || 'BIP44',
-            coin: opts.coin
+            derivationStrategy: opts.derivationStrategy || 'BIP44'
           });
         } catch (ex) {
           this.logger.warn(
@@ -921,8 +916,7 @@ export class ProfileProvider {
             opts.entropySource,
             {
               account: opts.account || 0,
-              derivationStrategy: opts.derivationStrategy || 'BIP44',
-              coin: opts.coin
+              derivationStrategy: opts.derivationStrategy || 'BIP44'
             }
           );
           walletClient.credentials.hwInfo = opts.hwInfo;
@@ -945,8 +939,7 @@ export class ProfileProvider {
             network,
             passphrase: opts.passphrase,
             language: lang,
-            account: 0,
-            coin: opts.coin
+            account: 0
           });
         } catch (e) {
           this.logger.info('Error creating recovery phrase: ' + e.message);
@@ -955,8 +948,7 @@ export class ProfileProvider {
             walletClient.seedFromRandomWithMnemonic({
               network,
               passphrase: opts.passphrase,
-              account: 0,
-              coin: opts.coin
+              account: 0
             });
           } else {
             return reject(e);
@@ -989,8 +981,7 @@ export class ProfileProvider {
               {
                 network: opts.networkName,
                 singleAddress: opts.singleAddress,
-                walletPrivKey: opts.walletPrivKey,
-                coin: opts.coin
+                walletPrivKey: opts.walletPrivKey
               },
               err => {
                 if (err) {
@@ -1059,9 +1050,7 @@ export class ProfileProvider {
           walletClient.joinWallet(
             opts.secret,
             opts.myName || 'me',
-            {
-              coin: opts.coin
-            },
+            {},
             err => {
               if (err) {
                 this.bwcErrorProvider
@@ -1121,7 +1110,6 @@ export class ProfileProvider {
       opts.m = 1;
       opts.n = 1;
       opts.networkName = 'livenet';
-      opts.coin = Coin.BTC;
       this.createWallet(opts)
         .then(wallet => {
           return resolve(wallet);
@@ -1166,12 +1154,6 @@ export class ProfileProvider {
     opts = opts || {};
 
     let ret = _.values(this.wallet as any);
-
-    if (opts.coin) {
-      ret = _.filter(ret, x => {
-        return x.credentials.coin == opts.coin;
-      });
-    }
 
     if (opts.network) {
       ret = _.filter(ret, x => {

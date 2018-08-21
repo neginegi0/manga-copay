@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
 
 // Native
@@ -34,8 +34,7 @@ export class CustomAmountPage {
     private logger: Logger,
     private socialSharing: SocialSharing,
     private txFormatProvider: TxFormatProvider,
-    private actionSheetProvider: ActionSheetProvider,
-    private navCtrl: NavController
+    private actionSheetProvider: ActionSheetProvider
   ) {
     let walletId = this.navParams.data.id;
     this.showShareButton = this.platformProvider.isCordova;
@@ -43,36 +42,33 @@ export class CustomAmountPage {
     this.wallet = this.profileProvider.getWallet(walletId);
 
     this.walletProvider.getAddress(this.wallet, false).then(addr => {
-      this.address = this.walletProvider.getAddressView(this.wallet, addr);
+      this.address = this.walletProvider.getAddressView(addr);
 
       let parsedAmount = this.txFormatProvider.parseAmount(
-        this.wallet.coin,
         this.navParams.data.amount,
         this.navParams.data.currency
       );
 
-      // Amount in USD or BTC
+      // Amount in USD or MANGA
       let _amount = parsedAmount.amount;
       let _currency = parsedAmount.currency;
       this.amountUnitStr = parsedAmount.amountUnitStr;
 
-      if (_currency != 'BTC' && _currency != 'BCH') {
-        // Convert to BTC or BCH
+      if (_currency != 'MANGA') {
+        // Convert to MANGA
         let amountUnit = this.txFormatProvider.satToUnit(
           parsedAmount.amountSat
         );
         var btcParsedAmount = this.txFormatProvider.parseAmount(
-          this.wallet.coin,
           amountUnit,
-          this.wallet.coin.toUpperCase()
+          _currency
         );
 
         this.amountCoin = btcParsedAmount.amount;
         this.altAmountStr = btcParsedAmount.amountUnitStr;
       } else {
-        this.amountCoin = _amount; // BTC or BCH
+        this.amountCoin = _amount; // MANGA
         this.altAmountStr = this.txFormatProvider.formatAlternativeStr(
-          this.wallet.coin,
           parsedAmount.amountSat
         );
       }
@@ -87,7 +83,7 @@ export class CustomAmountPage {
 
   private updateQrAddress(): void {
     this.qrAddress =
-      this.walletProvider.getProtoAddress(this.wallet, this.address) +
+      this.walletProvider.getProtoAddress(this.address) +
       '?amount=' +
       this.amountCoin;
   }
@@ -105,9 +101,5 @@ export class CustomAmountPage {
       }
     );
     infoSheet.present();
-  }
-
-  public close(): void {
-    this.navCtrl.popToRoot();
   }
 }

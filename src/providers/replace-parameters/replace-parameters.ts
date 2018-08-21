@@ -1,6 +1,6 @@
 /*
 * Example of use:
-* let message = this.replaceParametersProvider.replace(this.translate.instant('A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided.'), { amountBelowFeeStr: amountBelowFeeStr, coin: this.tx.coin.toUpperCase() });
+* let message = this.replaceParametersProvider.replace(this.translate.instant('A total of {{amountBelowFeeStr}} MANGA were excluded. These funds come from UTXOs smaller than the network fee provided.'), { amountBelowFeeStr: amountBelowFeeStr });
 */
 
 import { Injectable } from '@angular/core';

@@ -19,12 +19,9 @@ export class AddressBookProvider {
 
   private getNetwork(address: string): string {
     let network;
-    try {
-      network = this.bwcProvider.getBitcore().Address(address).network.name;
-    } catch (e) {
-      this.logger.warn('No valid bitcoin address. Trying bitcoin cash...');
-      network = this.bwcProvider.getBitcoreCash().Address(address).network.name;
-    }
+
+    network = this.bwcProvider.getMangacore().Address(address).network.name;
+
     return network;
   }
 
@@ -84,7 +81,7 @@ export class AddressBookProvider {
     return new Promise((resolve, reject) => {
       var network = this.getNetwork(entry.address);
       if (_.isEmpty(network)) {
-        let msg = this.translate.instant('Not valid bitcoin address');
+        let msg = this.translate.instant('Not valid mangacoin address');
         return reject(msg);
       }
       this.persistenceProvider
@@ -124,7 +121,7 @@ export class AddressBookProvider {
     return new Promise((resolve, reject) => {
       var network = this.getNetwork(addr);
       if (_.isEmpty(network)) {
-        let msg = this.translate.instant('Not valid bitcoin address');
+        let msg = this.translate.instant('Not valid mangacoin address');
         return reject(msg);
       }
       this.persistenceProvider

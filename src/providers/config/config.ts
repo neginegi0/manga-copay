@@ -11,7 +11,6 @@ export interface Config {
   };
 
   wallet: {
-    useLegacyAddress: boolean;
     requiredCopayers: number;
     totalCopayers: number;
     spendUnconfirmed: boolean;
@@ -103,10 +102,7 @@ export interface Config {
     weight: number;
   };
 
-  blockExplorerUrl: {
-    btc: string;
-    bch: string;
-  };
+  blockExplorerUrl: string;
 }
 
 const configDefault: Config = {
@@ -118,17 +114,16 @@ const configDefault: Config = {
 
   // wallet default config
   wallet: {
-    useLegacyAddress: false,
     requiredCopayers: 2,
     totalCopayers: 3,
     spendUnconfirmed: false,
     reconnectDelay: 5000,
     idleDurationMin: 4,
     settings: {
-      unitName: 'BTC',
+      unitName: 'MANGA',
       unitToSatoshi: 100000000,
       unitDecimals: 8,
-      unitCode: 'btc',
+      unitCode: 'MANGA',
       alternativeName: 'US Dollar',
       alternativeIsoCode: 'USD',
       defaultLanguage: '',
@@ -136,9 +131,9 @@ const configDefault: Config = {
     }
   },
 
-  // Bitcore wallet service URL
+  // Mangacore wallet service URL
   bws: {
-    url: 'https://bws.bitpay.com/bws/api'
+    url: 'https://bws.manga-core.com/bws/api'
   },
 
   download: {
@@ -153,13 +148,13 @@ const configDefault: Config = {
   rateApp: {
     bitpay: {
       ios:
-        'https://itunes.apple.com/app/bitpay-secure-bitcoin-wallet/id1149581638',
+        'https://itunes.apple.com/app/bitpay-secure-mangacoin-wallet/id1149581638',
       android:
         'https://play.google.com/store/apps/details?id=com.bitpay.wallet',
       wp: ''
     },
     copay: {
-      ios: 'https://itunes.apple.com/app/copay-bitcoin-wallet/id951330296',
+      ios: 'https://itunes.apple.com/app/copay-mangacoin-wallet/id951330296',
       android: 'https://play.google.com/store/apps/details?id=com.bitpay.copay',
       wp: ''
     }
@@ -208,10 +203,7 @@ const configDefault: Config = {
     weight: 3
   },
 
-  blockExplorerUrl: {
-    btc: 'insight.bitpay.com',
-    bch: 'bch-insight.bitpay.com/#'
-  }
+  blockExplorerUrl: 'insight.manga-core.com'
 };
 
 @Injectable()
@@ -295,7 +287,7 @@ export class ConfigProvider {
     }
 
     if (this.configCache.wallet.settings.unitCode == 'bit') {
-      // Convert to BTC. Bits will be disabled
+      // Convert to MANGA. Bits will be disabled
       this.configCache.wallet.settings.unitName =
         configDefault.wallet.settings.unitName;
       this.configCache.wallet.settings.unitToSatoshi =

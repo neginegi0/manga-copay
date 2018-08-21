@@ -13,11 +13,9 @@ export class FeeProvider {
   private CACHE_TIME_TS: number = 60;
   private cache: {
     updateTs: number;
-    coin: string;
     data?: any;
   } = {
-    updateTs: 0,
-    coin: ''
+    updateTs: 0
   };
 
   constructor(
@@ -46,14 +44,13 @@ export class FeeProvider {
   }
 
   public getFeeRate(
-    coin: string,
     network: string,
     feeLevel: string
   ): Promise<any> {
     return new Promise((resolve, reject) => {
       if (feeLevel == 'custom') return resolve();
       network = network || 'livenet';
-      this.getFeeLevels(coin)
+      this.getFeeLevels()
         .then(response => {
           let feeLevelRate;
 
@@ -93,9 +90,9 @@ export class FeeProvider {
     });
   }
 
-  public getCurrentFeeRate(coin: string, network: string): Promise<any> {
+  public getCurrentFeeRate(network: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.getFeeRate(coin, network, this.getCurrentFeeLevel())
+      this.getFeeRate(network, this.getCurrentFeeLevel())
         .then((data: number) => {
           return resolve(data);
         })
@@ -105,12 +102,9 @@ export class FeeProvider {
     });
   }
 
-  public getFeeLevels(coin: string): Promise<any> {
+  public getFeeLevels(): Promise<any> {
     return new Promise((resolve, reject) => {
-      coin = coin || 'btc';
-
       if (
-        this.cache.coin == coin &&
         this.cache.updateTs > Date.now() - this.CACHE_TIME_TS * 1000
       ) {
         return resolve({ levels: this.cache.data, fromCache: true });
@@ -119,14 +113,12 @@ export class FeeProvider {
       let walletClient = this.bwcProvider.getClient(null, {});
 
       walletClient.getFeeLevels(
-        coin,
         'livenet',
         (errLivenet, levelsLivenet) => {
           if (errLivenet) {
             return reject(this.translate.instant('Could not get dynamic fee'));
           }
           walletClient.getFeeLevels(
-            'btc',
             'testnet',
             (errTestnet, levelsTestnet) => {
               if (errTestnet) {
@@ -135,7 +127,6 @@ export class FeeProvider {
                 );
               }
               this.cache.updateTs = Date.now();
-              this.cache.coin = coin;
               this.cache.data = {
                 livenet: levelsLivenet,
                 testnet: levelsTestnet

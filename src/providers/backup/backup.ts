@@ -5,7 +5,6 @@ import { Logger } from '../../providers/logger/logger';
 import { AppProvider } from '../../providers/app/app';
 import { BwcProvider } from '../../providers/bwc/bwc';
 import { ProfileProvider } from '../../providers/profile/profile';
-import { ConfigProvider } from '../config/config';
 
 @Injectable()
 export class BackupProvider {
@@ -13,30 +12,21 @@ export class BackupProvider {
     private appProvider: AppProvider,
     private bwcProvider: BwcProvider,
     private logger: Logger,
-    private profileProvider: ProfileProvider,
-    private configProvider: ConfigProvider
+    private profileProvider: ProfileProvider
   ) {
     this.logger.info('BackupProvider initialized.');
   }
 
   public walletDownload(password, opts, walletId: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      let config = this.configProvider.get();
-
       let wallet = this.profileProvider.getWallet(walletId);
       let ew = this.walletExport(password, opts, walletId);
       if (!ew) return reject('Could not create backup');
 
       let walletName =
-        wallet.credentials.walletName || wallet.credentials.walletId;
-
-      let alias =
-        config.aliasFor && config.aliasFor[wallet.credentials.walletId];
-
-      if (alias) {
-        walletName = alias + ' [' + walletName + ']';
-      }
-
+        (wallet.alias || '') +
+        (wallet.alias ? '-' : '') +
+        wallet.credentials.walletName;
       if (opts.noSign) walletName = walletName + '-noSign';
       let filename =
         walletName + '-' + this.appProvider.info.nameCase + 'backup.aes.json';

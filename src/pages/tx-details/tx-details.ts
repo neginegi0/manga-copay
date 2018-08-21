@@ -67,10 +67,7 @@ export class TxDetailsPage {
       : true;
 
     let defaults = this.configProvider.getDefaults();
-    this.blockexplorerUrl =
-      this.wallet.coin === 'bch'
-        ? defaults.blockExplorerUrl.bch
-        : defaults.blockExplorerUrl.btc;
+    this.blockexplorerUrl = defaults.blockExplorerUrl;
 
     this.txConfirmNotificationProvider.checkIfEnabled(this.txId).then(res => {
       this.txNotification = {
@@ -176,12 +173,9 @@ export class TxDetailsPage {
         if (!opts.hideLoading) this.onGoingProcess.clear();
 
         this.btx = this.txFormatProvider.processTx(
-          this.wallet.coin,
-          tx,
-          this.walletProvider.useLegacyAddress()
+          tx
         );
         this.btx.feeFiatStr = this.txFormatProvider.formatAlternativeStr(
-          this.wallet.coin,
           tx.fees
         );
         this.btx.feeRateStr =

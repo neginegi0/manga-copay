@@ -116,24 +116,9 @@ describe('Provider: Wallet Provider', () => {
   });
 
   describe('Function: Get Protocol Handler Function', () => {
-    it('should return bitcoincash if coin is bch and network is livenet', () => {
-      let coin = 'bch';
-      let network = 'livenet';
-      let protocol = walletProvider.getProtocolHandler(coin, network);
-      expect(protocol).toEqual('bitcoincash');
-    });
-
-    it('should return bchtest if coin is bch and network is testnet', () => {
-      let coin = 'bch';
-      let network = 'testnet';
-      let protocol = walletProvider.getProtocolHandler(coin, network);
-      expect(protocol).toEqual('bchtest');
-    });
-
-    it('should return bitcoin if coin is btc', () => {
-      let coin = 'btc';
-      let protocol = walletProvider.getProtocolHandler(coin);
-      expect(protocol).toEqual('bitcoin');
+    it('should return mangacoin if coin is btc', () => {
+      let protocol = walletProvider.getProtocolHandler();
+      expect(protocol).toEqual('mangacoin');
     });
   });
 });

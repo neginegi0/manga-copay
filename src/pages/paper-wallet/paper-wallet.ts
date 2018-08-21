@@ -16,7 +16,7 @@ import { OnGoingProcessProvider } from '../../providers/on-going-process/on-goin
 import { PlatformProvider } from '../../providers/platform/platform';
 import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
-import { WalletOptions, WalletProvider } from '../../providers/wallet/wallet';
+import { WalletProvider } from '../../providers/wallet/wallet';
 
 @Component({
   selector: 'page-paper-wallet',
@@ -43,7 +43,7 @@ export class PaperWalletPage {
   public balanceHidden: boolean;
   public error: boolean;
   public isOpenSelector: boolean;
-  private bitcore;
+  private mangacore;
 
   // Platform info
   public isCordova: boolean;
@@ -64,7 +64,7 @@ export class PaperWalletPage {
     private platformProvider: PlatformProvider,
     private bwcErrorProvider: BwcErrorProvider
   ) {
-    this.bitcore = this.bwcProvider.getBitcore();
+    this.mangacore = this.bwcProvider.getMangacore();
     this.isCordova = this.platformProvider.isCordova;
     this.isOpenSelector = false;
     this.scannedKey = this.navParams.data.privateKey;
@@ -80,10 +80,6 @@ export class PaperWalletPage {
     this.wallets = _.filter(_.clone(this.wallets), wallet => {
       return !wallet.needsBackup;
     });
-
-    this.coins = _.uniq(
-      _.map(this.wallets, (wallet: Partial<WalletOptions>) => wallet.coin)
-    );
   }
 
   ionViewWillLeave() {
@@ -134,22 +130,21 @@ export class PaperWalletPage {
 
   private getBalance(
     privateKey: string,
-    coin: string,
     cb: (err, balance: number) => any
   ): void {
-    this.wallet.getBalanceFromPrivateKey(privateKey, coin, cb);
+    this.wallet.getBalanceFromPrivateKey(privateKey, cb);
   }
 
   private checkPrivateKey(privateKey: string): boolean {
     try {
-      new this.bitcore.PrivateKey(privateKey, 'livenet');
+      new this.mangacore.PrivateKey(privateKey, 'livenet');
     } catch (err) {
       return false;
     }
     return true;
   }
 
-  private _scanFunds(coin: string): Promise<any> {
+  private _scanFunds(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getPrivateKey(
         this.scannedKey,
@@ -160,9 +155,9 @@ export class PaperWalletPage {
           if (!this.checkPrivateKey(privateKey))
             return reject(new Error('Invalid private key'));
 
-          this.getBalance(privateKey, coin, (err, balance: number) => {
+          this.getBalance(privateKey, (err, balance: number) => {
             if (err) return reject(err);
-            return resolve({ privateKey, coin, balance });
+            return resolve({ privateKey, balance });
           });
         }
       );
@@ -172,7 +167,7 @@ export class PaperWalletPage {
   public scanFunds(): void {
     this.onGoingProcessProvider.set('scanning');
 
-    let scans = _.map(this.coins, (coin: string) => this._scanFunds(coin));
+    let scans = _.map(['mangacoin'], () => this._scanFunds());
 
     Promise.all(scans)
       .then(data => {
@@ -182,14 +177,13 @@ export class PaperWalletPage {
           this.balances.push(d);
         });
 
-        let available = {};
+        let available: boolean;
         this.balances = _.filter(_.clone(this.balances), b => {
-          let nonzero: boolean = b.balance > 0;
-          available[b.coin] = nonzero;
-          return nonzero;
+          available = b.balance > 0;
+          return true;
         });
 
-        this.wallets = _.filter(_.clone(this.wallets), w => available[w.coin]);
+        this.wallets = _.filter(_.clone(this.wallets), () => available);
 
         if (this.wallets[0]) this.wallet = this.wallets[0];
 
@@ -217,18 +211,16 @@ export class PaperWalletPage {
 
   private _sweepWallet(): Promise<any> {
     return new Promise((resolve, reject) => {
-      let balanceToSweep = _.filter(this.balances, b => {
-        return b.coin === this.wallet.coin;
+      let balanceToSweep = _.filter(this.balances, () => {
+        return true;
       })[0];
 
       this.walletProvider
         .getAddress(this.wallet, true)
         .then((destinationAddress: string) => {
           let opts: {
-            coin?: any;
             fee?: any;
           } = {};
-          opts.coin = balanceToSweep.coin;
           this.wallet.buildTxFromPrivateKey(
             balanceToSweep.privateKey,
             destinationAddress,
@@ -237,7 +229,7 @@ export class PaperWalletPage {
               if (err) return reject(err);
               let rawTxLength = testTx.serialize().length;
               this.feeProvider
-                .getCurrentFeeRate(balanceToSweep.coin, 'livenet')
+                .getCurrentFeeRate('livenet')
                 .then((feePerKb: number) => {
                   opts.fee = Math.round((feePerKb * rawTxLength) / 2000);
                   this.wallet.buildTxFromPrivateKey(
@@ -249,8 +241,7 @@ export class PaperWalletPage {
                       this.wallet.broadcastRawTx(
                         {
                           rawTx: tx.serialize(),
-                          network: 'livenet',
-                          coin: balanceToSweep.coin
+                          network: 'livenet'
                         },
                         (err, txid) => {
                           if (err) return reject(err);

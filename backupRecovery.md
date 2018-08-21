@@ -14,8 +14,8 @@ Copay is a Multisig HD Wallet. Copay app holds the extended private keys for the
 ### Backup recovery cases
 
 - Case 1: Lost of device holding the wallet
-- Case 2: Change to a new Bitcore Wallet Service (BWS)
-- Case 3: Lost device + new Bitcore Wallet Service
+- Case 2: Change to a new Mangacore Wallet Service (BWS)
+- Case 3: Lost device + new Mangacore Wallet Service
 
 ### Wallet Recovery Scope
 
@@ -28,7 +28,7 @@ Copay is a Multisig HD Wallet. Copay app holds the extended private keys for the
 
 Case 1: From both RP and WB, full recovery is possible. - Enter the RP or the WB at 'Import wallet' in a new device. - Wallet access should be restored.
 
-Case 2: Basic recovery is possible using the device where the wallet is installed, pointing to the new server (Recreate wallet feature). - Point to the new server (Settings -> Bitcore Wallet Service). - If the wallet is not registered at the new Wallet service, a 'Recreate' button will appear at wallet's home. Click it to recreate the wallet. - Wallet should be recreated and access to funds should be restored. - If the wallet existed, it may be necessary to rescan Wallet's addresses for funds (from Settings -> Advanced -> Scan Addresses for Funds)
+Case 2: Basic recovery is possible using the device where the wallet is installed, pointing to the new server (Recreate wallet feature). - Point to the new server (Settings -> Mangacore Wallet Service). - If the wallet is not registered at the new Wallet service, a 'Recreate' button will appear at wallet's home. Click it to recreate the wallet. - Wallet should be recreated and access to funds should be restored. - If the wallet existed, it may be necessary to rescan Wallet's addresses for funds (from Settings -> Advanced -> Scan Addresses for Funds)
 
 Case 3: From both Backup Words and Backup file, basic recovery is possible.
 (Using RP) - Enter the RP at 'Import Wallet'

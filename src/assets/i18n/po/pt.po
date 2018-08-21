@@ -32,20 +32,20 @@ msgstr "Classificações de 5 estrelas ajudam-nos a que o {{appName}} chegue ás
 msgid "A member of the team will review your feedback as soon as possible."
 msgstr "Um membro da equipa irá rever a sua avaliação assim que possível."
 
-msgid "A total of {{amountAboveMaxSizeStr}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
-msgstr "Um total de {{amountAboveMaxSizeStr}} {{coin}} foi excluído. O tamanho máximo permitido para uma transação foi excedido."
+msgid "A total of {{amountAboveMaxSizeStr}} MANGA were excluded. The maximum size allowed for a transaction was exceeded."
+msgstr "Um total de {{amountAboveMaxSizeStr}} MANGA foi excluído. O tamanho máximo permitido para uma transação foi excedido."
 
-msgid "A total of {{amountBelowFeeStr}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
-msgstr "Um total de {{amountBelowFeeStr}} {{coin}} foi excluído. Estes fundos provêm de UTXOs menores que a taxa de rede fornecida."
+msgid "A total of {{amountBelowFeeStr}} MANGA were excluded. These funds come from UTXOs smaller than the network fee provided."
+msgstr "Um total de {{amountBelowFeeStr}} MANGA foi excluído. Estes fundos provêm de UTXOs menores que a taxa de rede fornecida."
 
 msgid "A total of {{amountStr}} ({{fiatAmount | currency}} {{currencyIsoCode}}) will be exchanged for {{withdrawalStr}} ({{fiatWithdrawal | currency}} {{currencyIsoCode}}). Would you like to proceed?"
 msgstr "Um total de {{amountStr}} ({{fiatAmount | currency}} {{currencyIsoCode}}) será trocado por {{withdrawalStr}} ({{fiatWithdrawal | currency}} {{currencyIsoCode}}). Quer prosseguir?"
 
-msgid "A total of {{fee}} {{coin}} were excluded. The maximum size allowed for a transaction was exceeded."
-msgstr "O montante de {{fee}} {{coin}} foi excluído. O valor máximo permitido para uma transação foi excedido."
+msgid "A total of {{fee}} MANGA were excluded. The maximum size allowed for a transaction was exceeded."
+msgstr "O montante de {{fee}} MANGA foi excluído. O valor máximo permitido para uma transação foi excedido."
 
-msgid "A total of {{fee}} {{coin}} were excluded. These funds come from UTXOs smaller than the network fee provided."
-msgstr "Um total de {{fee}} {{coin}} foi excluído. Estes fundos provêm de UTXOs menores que a taxa de rede fornecida."
+msgid "A total of {{fee}} MANGA were excluded. These funds come from UTXOs smaller than the network fee provided."
+msgstr "Um total de {{fee}} MANGA foi excluído. Estes fundos provêm de UTXOs menores que a taxa de rede fornecida."
 
 msgid "About"
 msgstr "Sobre"
@@ -2433,8 +2433,8 @@ msgstr "{{appName}} depende do Serviço Bitcore Wallet (BWS) para informações 
 msgid "{{btx.feeRateStr}} of the total amount"
 msgstr "{{btx.feeRateStr}} do valor total"
 
-msgid "{{fee}} {{coin}} will be deducted for bitcoin networking fees."
-msgstr "{{fee}} {{coin}} será deduzido para taxas de rede bitcoin."
+msgid "{{fee}} MANGA will be deducted for bitcoin networking fees."
+msgstr "{{fee}} MANGA será deduzido para taxas de rede bitcoin."
 
 msgid "{{tx.feeRateStr}} of the total amount"
 msgstr "{{tx.feeRateStr}} do valor total"

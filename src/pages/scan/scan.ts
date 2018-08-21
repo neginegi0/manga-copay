@@ -125,7 +125,7 @@ export class ScanPage {
       }
       switch (data.redirTo) {
         case 'AmountPage':
-          this.sendPaymentToAddress(data.value, data.coin);
+          this.sendPaymentToAddress(data.value);
           break;
         case 'AddressBookPage':
           this.addToAddressBook(data.value);
@@ -194,12 +194,12 @@ export class ScanPage {
     this.externalLinkProvider.open(url);
   }
 
-  private sendPaymentToAddress(bitcoinAddress: string, coin: string): void {
-    this.navCtrl.push(AmountPage, { toAddress: bitcoinAddress, coin });
+  private sendPaymentToAddress(mangacoinAddress: string): void {
+    this.navCtrl.push(AmountPage, { toAddress: mangacoinAddress });
   }
 
-  private addToAddressBook(bitcoinAddress: string): void {
-    this.navCtrl.push(AddressbookAddPage, { addressbookEntry: bitcoinAddress });
+  private addToAddressBook(mangacoinAddress: string): void {
+    this.navCtrl.push(AddressbookAddPage, { addressbookEntry: mangacoinAddress });
   }
 
   private scanPaperWallet(privateKey: string) {

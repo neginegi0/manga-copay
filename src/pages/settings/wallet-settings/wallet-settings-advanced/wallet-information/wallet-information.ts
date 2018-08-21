@@ -25,7 +25,6 @@ export class WalletInformationPage {
   public copayerId;
   public balanceByAddress;
   public account: number;
-  public coin: string;
   public network: string;
   public addressType: string;
   public derivationStrategy: string;
@@ -53,7 +52,6 @@ export class WalletInformationPage {
   ionViewWillEnter() {
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.walletName = this.wallet.name;
-    this.coin = this.wallet.coin;
     this.walletId = this.wallet.credentials.walletId;
     this.N = this.wallet.credentials.n;
     this.M = this.wallet.credentials.m;
