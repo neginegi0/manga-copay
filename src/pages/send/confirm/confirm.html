@@ -25,7 +25,6 @@
             </div>
             <img class="sending-img" src="assets/img/icon-tx-sent-outline.svg">
           </div>
-          <div class="alternative">{{tx.amount}} MANGA</div>
         </div>
       </div>
     </ion-item>
@@ -38,9 +37,9 @@
         <div>...</div>
       </div>
       <div *ngIf="wallet && tx.txp[wallet.id]">
-        <span class="fee-amount">{{tx.txp[wallet.id].fee}} MANGA</span>
+        <span class="fee-amount">{{tx.txp[wallet.id].feeStr}}</span>
         <div class="fee-details">
-          {{tx.txp[wallet.id].fee}} MANGA
+          {{tx.txp[wallet.id].feeStr}}
           <span *ngIf="tx.txp[wallet.id].feeRatePerStr">
             &middot;
             <span>

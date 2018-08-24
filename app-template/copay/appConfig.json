@@ -1,7 +1,7 @@
 {
   "packageName": "copay",
   "packageDescription": "Copay Mangacoin Wallet",
-  "packageNameId": "com.bitpay.copay",
+  "packageNameId": "com.mangacoin.copay",
   "themeColor": "#192c3a",
   "userVisibleName": "Copay",
   "purposeLine": "Copay Mangacoin Wallet",

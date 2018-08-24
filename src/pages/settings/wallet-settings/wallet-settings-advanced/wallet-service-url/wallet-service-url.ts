@@ -61,7 +61,7 @@ export class WalletServiceUrlPage {
     let appName = this.app.info.nameCase;
     this.comment = this.replaceParametersProvider.replace(
       this.translate.instant(
-        "{{appName}} depends on Mangacore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.bitpay.com (BitPay's public BWS instance)."
+        "{{appName}} depends on Mangacore Wallet Service (BWS) for blockchain information, networking and Copayer synchronization. The default configuration points to https://bws.manga-core.com (Mangacoin's public BWS instance)."
       ),
       { appName }
     );
@@ -80,11 +80,11 @@ export class WalletServiceUrlPage {
     switch (this.walletServiceForm.value.bwsurl) {
       case 'prod':
       case 'production':
-        bws = 'https://bws.bitpay.com/bws/api';
+        bws = 'https://bws.manga-core.com/bws/api';
         break;
       case 'sta':
       case 'staging':
-        bws = 'https://bws-staging.b-pay.net/bws/api';
+        bws = 'https://bws.manga-core.com/bws/api';
         break;
       case 'loc':
       case 'local':

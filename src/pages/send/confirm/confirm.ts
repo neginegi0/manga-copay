@@ -488,6 +488,7 @@ export class ConfirmPage extends WalletTabsChild {
           let per = (txp.fee / (txp.amount + txp.fee)) * 100;
           txp.feeRatePerStr = per.toFixed(2) + '%';
           txp.feeTooHigh = per > this.FEE_TOO_HIGH_LIMIT_PER;
+	  txp.feeStr = this.txFormatProvider.formatAmountStr(txp.fee);
 
           if (txp.feeTooHigh) {
 	    const walletType = 'Mangacoin';

@@ -38,6 +38,7 @@ import { PopupProvider } from '../../providers/popup/popup';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { ReleaseProvider } from '../../providers/release/release';
 import { ReplaceParametersProvider } from '../../providers/replace-parameters/replace-parameters';
+import { TxFormatProvider } from '../../providers/tx-format/tx-format';
 import { WalletProvider } from '../../providers/wallet/wallet';
 import { SettingsPage } from '../settings/settings';
 
@@ -102,7 +103,8 @@ export class HomePage {
     private emailProvider: EmailNotificationsProvider,
     private replaceParametersProvider: ReplaceParametersProvider,
     private clipboardProvider: ClipboardProvider,
-    private incomingDataProvider: IncomingDataProvider
+    private incomingDataProvider: IncomingDataProvider,
+    private txFormatProvider: TxFormatProvider
   ) {
     this.updatingWalletId = {};
     this.addressbook = {};
@@ -474,6 +476,13 @@ export class HomePage {
           this.zone.run(() => {
             this.notifications = data.notifications;
             this.notificationsN = data.total;
+
+	    if(this.notifications && _.isArray(this.notifications)){
+	        for(var idx = 0; idx < this.notifications.length; idx++){
+                    this.notifications[idx].data.amountStr = 
+	                this.txFormatProvider.formatAmountStr(this.notifications[idx].data.amount);
+		}
+	    }
           });
         })
         .catch(err => {

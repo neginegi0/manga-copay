@@ -33,7 +33,7 @@ export class BwcProvider {
 
     // note opts use `bwsurl` all lowercase;
     let bwc = new BWC({
-      baseUrl: opts.bwsurl || 'https://bws.bitpay.com/bws/api',
+      baseUrl: opts.bwsurl || 'https://bws.manga-core.com/bws/api',
       verbose: opts.verbose,
       timeout: 100000,
       transports: ['polling']
